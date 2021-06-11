@@ -9,12 +9,16 @@
         text-center
         border-4 border-current
         rounded
+        text-white
+        bg-gradient-to-r
+        from-green-400
+        to-blue-200
       "
     >
       <p class="header-logo text-4xl">Gagnismaðr</p>
     </div>
   </div>
-  <civilizations/>
+  <civilizations />
 </template> 
 
 <script lang="ts">
