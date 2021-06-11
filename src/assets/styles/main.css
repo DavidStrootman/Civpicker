@@ -1,3 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+:root {
+  --extra_light_blue: #D8E2E8;
+  --light_blue: #9EC1CC;
+  --blue: #5E7C94;
+  --clay: #876D72;
+  --brick: #913716;
+}
+
+.header-logo {
+  font-family: 'Fredoka One';
+}

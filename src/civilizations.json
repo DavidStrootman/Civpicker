@@ -1,0 +1,76 @@
+{
+  "expansions": [
+    {
+      "name": "The Age of Kings",
+      "civilizations": [
+        "Britons",
+        "Byzantines",
+        "Celts",
+        "Chinese",
+        "Franks",
+        "Goths",
+        "Japanese",
+        "Mongols",
+        "Persians",
+        "Saracens",
+        "Teutons",
+        "Turks",
+        "Vikings"
+      ]
+    },
+    {
+      "name": "The Conquerors",
+      "civilizations": [
+        "Aztecs",
+        "Huns",
+        "Koreans",
+        "Mayans",
+        "Spanish"
+      ]
+    },
+    {
+      "name": "The Forgotten",
+      "civilizations": [
+        "Incas",
+        "Indians",
+        "Italians",
+        "Magyars",
+        "Slavs"
+      ]
+    },
+    {
+      "name": "The African Kingdoms",
+      "civilizations": [
+        "Berbers",
+        "Ethiopians",
+        "Malians",
+        "Portuguese"
+      ]
+    },
+    {
+      "name": "Rise of the Rajas",
+      "civilizations": [
+        "Burmese",
+        "Khmer",
+        "Malay",
+        "Vietnamese"
+      ]
+    },
+    {
+      "name": "Definitive Edition",
+      "civilizations": [
+        "Bulgarians",
+        "Cumans",
+        "Lithuanians",
+        "Tatars"
+      ]
+    },
+    {
+      "name": "Lords of the West",
+      "civilizations": [
+        "Burgundians",
+        "Sicilians"
+      ]
+    }
+  ]
+}
