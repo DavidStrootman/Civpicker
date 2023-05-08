@@ -95,7 +95,7 @@ export default {
             if (this.accordionActiveIndex == 0) {
                 this.accordionActiveIndex = -1
             } else {
-                const audio = new Audio('/sound/vine-boom.mp3');
+                const audio = new Audio('./sound/vine-boom.mp3');
                 audio.play();
                 this.accordionActiveIndex = 0
             }
@@ -188,14 +188,14 @@ export default {
                                      v-if="slotProps.data.focuses.length > 0">
                                     <template v-for="focus of slotProps.data.focuses">
                                         <img class="border-round shadow-4"
-                                             :src="`/images/focuses/${focus}.webp`"
+                                             :src="`./images/focuses/${focus}.webp`"
                                              :alt="focus"
                                              v-tooltip.left="focus"
                                         />
                                     </template>
                                 </div>
                                 <img class="max-w-2rem"
-                                     :src="`/images/civilizations/CivIcon-${slotProps.data.name}.webp`"
+                                     :src="`./images/civilizations/CivIcon-${slotProps.data.name}.webp`"
                                      :alt="slotProps.data.name"
                                      :title="slotProps.data.name"
                                 />
