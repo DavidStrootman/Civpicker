@@ -1,6 +1,21 @@
-import { createApp } from 'vue'
+import {createApp} from 'vue'
+import './style.css'
+// @ts-ignore
 import App from './App.vue'
-import './assets/styles/main.css'
+
+import PrimeVue from 'primevue/config';
+import 'primevue/resources/primevue.min.css';
+import 'primeflex/primeflex.css';
+import 'primeicons/primeicons.css';
+import Button from "primevue/button";
+import Tooltip from 'primevue/tooltip';
 
 
-createApp(App).mount('#app')
+let app = createApp(App)
+
+app.use(PrimeVue, {ripple: true});
+
+app.component("Button", Button)
+app.directive('tooltip', Tooltip);
+
+app.mount('#app')

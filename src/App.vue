@@ -1,34 +1,40 @@
-<template>
-  <div class="container header-bar px-32 p-2">
-    <div
-      class="
-        logo-container
-        w-64
-        mt-12
-        p-2
-        text-center
-        border-4 border-current
-        rounded
-        text-white
-        bg-gradient-to-r
-        from-green-400
-        to-blue-200
-      "
-    >
-      <p class="header-logo text-4xl">Gagnismaðr</p>
-    </div>
-  </div>
-  <civilizations />
-</template> 
-
 <script lang="ts">
-import { defineComponent } from "vue";
-import civilizations from "./components/civilizations.vue";
 
-export default defineComponent({
-  name: "App",
-  components: {
-    civilizations,
-  },
-});
+import civilization_grid from "./components/civilization_grid.vue";
+import Button from "primevue/button";
+
+export default {
+    name: "App",
+    methods: {
+        toggleTheme() {
+            let nextTheme = '';
+            if (this.currentTheme === 'soho-light') nextTheme = 'soho-dark';
+            else if (this.currentTheme === 'soho-dark') nextTheme = 'soho-light';
+
+            // @ts-ignore
+            this.$primevue.changeTheme(this.currentTheme, nextTheme, 'light-mode', () => {
+            });
+
+            this.currentTheme = nextTheme;
+        }
+    },
+    components: {
+        Button,
+        civilization_grid
+    },
+    data() {
+        return {
+            currentTheme: "soho-light",
+        }
+    }
+};
 </script>
+
+
+<template>
+    <p class="header-logo text-4xl">Gagnismaðr</p>
+    <Button ref="theme-toggle" class="absolute mx-6 my-4 right-0 top-0"
+            :icon="currentTheme === 'soho-light' ? 'pi pi-moon' : 'pi pi-sun'" text rounded
+            aria-label="Theme" @click="toggleTheme()"/>
+    <civilization_grid/>
+</template>
