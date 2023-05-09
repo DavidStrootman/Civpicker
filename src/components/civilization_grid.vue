@@ -177,11 +177,19 @@ export default {
                         <div @click="civ_session.selected_civs.includes(data.name) ? civ_session.selected_civs.splice(civ_session.selected_civs.indexOf(data.name), 1) : civ_session.selected_civs.push(data.name)"
                              v-bind:class="{'surface-hover': civ_session.selected_civs.includes(data.name),
                                     'surface-card': !civ_session.selected_civs.includes(data.name)}"
-                             class="border-1 relative h-6rem surface-border border-round"
+                             class="border-1 relative h-7rem surface-border border-round"
                              style="cursor: pointer">
-                            <div class="flex align-content-center justify-content-center bg-primary-200 border-none shadow-2 w-3rem absolute left-0 top-0 p-1"
-                                 style="border-radius: var(--border-radius) 0 var(--border-radius) 0"
-                                 v-tooltip.top="data.expansion">
+                            <div class="flex absolute left-0 top-0" v-on:click="$event.stopPropagation()">
+                                <Checkbox :ref="`checkbox_${data.name}`"
+                                          v-model="civ_session.selected_civs"
+                                          :value="data.name"
+                                          :inputClass="['border-top-none', 'border-left-none','border-right-1', 'border-bottom-1']"
+                                          :inputStyle="{'border-radius':' var(--border-radius) 0 var(--border-radius) 0'}"/>
+                            </div>
+
+                            <div class="flex align-content-center justify-content-center surface-hover w-3rem absolute left-0 bottom-0 p-1"
+                                 style="border-radius: 0 var(--border-radius) 0 var(--border-radius); outline: 1px solid var(--surface-border) "
+                                 v-tooltip.bottom="data.expansion">
                                 <div class="flex">
                                     <img class="text-300 w-1rem"
                                          style="font-size: 0.8rem"
@@ -190,13 +198,8 @@ export default {
                                 </div>
                             </div>
 
-                            <div class="flex p-3 h-full justify-content-between align-items-center">
+                            <div class="flex pl-6 pr-3 h-full justify-content-between align-content-center align-items-center">
                                 <div class="flex gap-2 align-items-center">
-                                    <div v-on:click="$event.stopPropagation()">
-                                        <Checkbox :ref="`checkbox_${data.name}`"
-                                                  v-model="civ_session.selected_civs"
-                                                  :value="data.name"/>
-                                    </div>
                                     <img class="max-w-2rem"
                                          :src="`./images/civilizations/CivIcon-${data.name}.webp`"
                                          :alt="data.name"
@@ -209,7 +212,7 @@ export default {
                                         <img class="border-round shadow-4"
                                              :src="`./images/focuses/${focus}.webp`"
                                              :alt="focus"
-                                             v-tooltip.left="focus"
+                                             v-tooltip.right="focus"
                                         />
                                     </template>
                                 </div>
