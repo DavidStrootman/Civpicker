@@ -8,8 +8,8 @@ export default {
     methods: {
         toggleTheme() {
             let nextTheme = '';
-            if (this.currentTheme === 'soho-light') nextTheme = 'soho-dark';
-            else if (this.currentTheme === 'soho-dark') nextTheme = 'soho-light';
+            if (this.currentTheme === 'soho-light-red') nextTheme = 'soho-dark';
+            else if (this.currentTheme === 'soho-dark') nextTheme = 'soho-light-red';
 
             // @ts-ignore
             this.$primevue.changeTheme(this.currentTheme, nextTheme, 'light-mode', () => {
@@ -24,7 +24,7 @@ export default {
     },
     data() {
         return {
-            currentTheme: "soho-light",
+            currentTheme: "soho-light-red",
         }
     }
 };
