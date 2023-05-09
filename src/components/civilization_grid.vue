@@ -1,5 +1,6 @@
 <script lang="ts">
 import unpopulated_civs from "../civilizations.json"
+import focuses from "../focuses.json"
 import {Civ} from "../models/civ.ts"
 import {CivSession} from "../models/civ_session.ts"
 import '../assets/styles/civilizations.css'
@@ -46,6 +47,7 @@ export default {
             // TODO: Create session in App.vue and pass it to this component.
             // TODO: Remember selected and played civs.
             unpopulated_civs,
+            focuses,
             civ_session: new CivSession([], []),
             civilizations: [] as Array<Civ>,
             random_civs: [] as Array<string>,
@@ -58,7 +60,7 @@ export default {
     },
     beforeMount() {
         const selected_civs: Array<string> = []
-        for (let unpopulated_civ of unpopulated_civs.civilizations) {
+        for (let unpopulated_civ of unpopulated_civs.civilizations.reverse()) {
             this.civilizations.push(
                 new Civ({
                     name: unpopulated_civ.name,
@@ -85,6 +87,7 @@ export default {
         },
         generate_random_civs() {
             this.random_civs = []
+
             if (this.civ_session.selected_civs.length != 0) {
                 for (let i = 0; i < this.random_count; ++i) {
                     this.random_civs.push(this.civ_session.selected_civs[Math.floor(Math.random() * this.civ_session.selected_civs.length)]);
@@ -95,8 +98,6 @@ export default {
             if (this.accordionActiveIndex == 0) {
                 this.accordionActiveIndex = -1
             } else {
-                const audio = new Audio('./sound/vine-boom.mp3');
-                audio.play();
                 this.accordionActiveIndex = 0
             }
         }
@@ -109,7 +110,7 @@ export default {
 
 <template>
     <TabView v-model:activeIndex="activeTab" v-if="random_civs.length != 0">
-        <TabPanel v-for="civ of random_civs" :key="civ" :header="civ">
+        <TabPanel v-for="[key, civ] of random_civs.entries()" :key="key" :header="`${key+1}: ${civ}`">
             <p>{{ civ }}</p>
         </TabPanel>
     </TabView>
@@ -136,7 +137,6 @@ export default {
                         </span>
                 <span class="p-buttonset">
                     <Button outlined label="Select None"
-
                             @click="civ_session.selected_civs = civ_session.selected_civs.filter(civ => !filtered_civs.includes( civ ) );"
                             v-on:click.stop/>
                     <Button outlined label="Select All"
@@ -157,36 +157,55 @@ export default {
     <Accordion v-model:activeIndex="accordionActiveIndex" expandIcon="pi pi-angle-left">
         <AccordionTab :pt="{headerAction: {class: 'flex-row-reverse hidden'},
                             content: {class: 'surface-ground border-none'}}">
-            <p>
-                Hey
-            </p>
+            <div class="flex">
+                <template v-for="focus of focuses.focuses">
+                    <img class="border-round shadow-4 w-4"
+                         :src="`./images/focuses/${focus.name}.webp`"
+                         :alt="focus.name"
+                         v-tooltip.left="focus.name"/>
+                </template>
+            </div>
         </AccordionTab>
     </Accordion>
 
     <Card>
         <template #content>
             <DataView :dataKey="undefined" :value="civilizations" :layout="'grid'">
-                <template class="border-round" #grid="slotProps">
-                    <div v-if="filtered_civs.includes(slotProps.data.name)"
+                <template class="border-round" #grid="{data}">
+                    <div v-if="filtered_civs.includes(data.name)"
                          class="col-12 sm:col-6 lg:col-4 xl:col-3 p-2">
-                        <div @click="($refs[`checkbox_${slotProps.data.name}`] as any).onClick()"
-                             v-bind:class="{'surface-hover': civ_session.selected_civs.includes(slotProps.data.name),
-                                    'surface-card': !civ_session.selected_civs.includes(slotProps.data.name)}"
-                             class="border-1 h-6rem surface-border border-round"
+                        <div @click="civ_session.selected_civs.includes(data.name) ? civ_session.selected_civs.splice(civ_session.selected_civs.indexOf(data.name), 1) : civ_session.selected_civs.push(data.name)"
+                             v-bind:class="{'surface-hover': civ_session.selected_civs.includes(data.name),
+                                    'surface-card': !civ_session.selected_civs.includes(data.name)}"
+                             class="border-1 relative h-6rem surface-border border-round"
                              style="cursor: pointer">
-                            <div class="relative">
-                        <span class="text-300 absolute right-0 top-0 pr-2"
-                              style="font-size: 0.8rem">{{ slotProps.data.expansion }}</span>
-                            </div>
-                            <div class="flex p-3 gap-2 h-full align-items-center">
-                                <div v-on:click="$event.stopPropagation()">
-                                    <Checkbox :ref="`checkbox_${slotProps.data.name}`"
-                                              v-model="civ_session.selected_civs"
-                                              :value="slotProps.data.name"/>
+                            <div class="flex align-content-center justify-content-center bg-primary-200 border-none shadow-2 w-3rem absolute left-0 top-0 p-1"
+                                 style="border-radius: var(--border-radius) 0 var(--border-radius) 0"
+                                 v-tooltip.top="data.expansion">
+                                <div class="flex">
+                                    <img class="text-300 w-1rem"
+                                         style="font-size: 0.8rem"
+                                         :src="`./images/expansions/${data.expansion.replace(/ /g,'_')}.webp`"
+                                         :alt="data.expansion"/>
                                 </div>
-                                <div class="flex gap-2 max-w-2rem p-1 -m-1 flex-column"
-                                     v-if="slotProps.data.focuses.length > 0">
-                                    <template v-for="focus of slotProps.data.focuses">
+                            </div>
+
+                            <div class="flex p-3 h-full justify-content-between align-items-center">
+                                <div class="flex gap-2 align-items-center">
+                                    <div v-on:click="$event.stopPropagation()">
+                                        <Checkbox :ref="`checkbox_${data.name}`"
+                                                  v-model="civ_session.selected_civs"
+                                                  :value="data.name"/>
+                                    </div>
+                                    <img class="max-w-2rem"
+                                         :src="`./images/civilizations/CivIcon-${data.name}.webp`"
+                                         :alt="data.name"
+                                         :title="data.name"/>
+                                    <div class="text-xl font-bold">{{ data.name }}</div>
+                                </div>
+                                <div class="flex gap-2 max-w-2rem p-1 -m-1 mr-2 flex-column"
+                                     v-if="data.focuses.length > 0">
+                                    <template v-for="focus of data.focuses">
                                         <img class="border-round shadow-4"
                                              :src="`./images/focuses/${focus}.webp`"
                                              :alt="focus"
@@ -194,12 +213,6 @@ export default {
                                         />
                                     </template>
                                 </div>
-                                <img class="max-w-2rem"
-                                     :src="`./images/civilizations/CivIcon-${slotProps.data.name}.webp`"
-                                     :alt="slotProps.data.name"
-                                     :title="slotProps.data.name"
-                                />
-                                <div class="text-xl font-bold">{{ slotProps.data.name }}</div>
                             </div>
                         </div>
                     </div>

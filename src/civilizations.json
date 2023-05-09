@@ -3,7 +3,9 @@
     {
       "civ_bonuses": "",
       "expansion": "Age of Kings",
-      "focuses": [],
+      "focuses": [
+        "Archer"
+      ],
       "name": "Britons",
       "team_bonus": "",
       "team_unit": "",
@@ -16,7 +18,9 @@
     {
       "civ_bonuses": "",
       "expansion": "Age of Kings",
-      "focuses": [],
+      "focuses": [
+        "Defence"
+      ],
       "name": "Byzantines",
       "team_bonus": "",
       "team_unit": "",
@@ -29,7 +33,10 @@
     {
       "civ_bonuses": "",
       "expansion": "Age of Kings",
-      "focuses": [],
+      "focuses": [
+        "Infantry",
+        "Siege"
+      ],
       "name": "Celts",
       "team_bonus": "",
       "team_unit": "",
@@ -42,7 +49,9 @@
     {
       "civ_bonuses": "",
       "expansion": "Age of Kings",
-      "focuses": [],
+      "focuses": [
+        "Archer"
+      ],
       "name": "Chinese",
       "team_bonus": "",
       "team_unit": "",
@@ -55,7 +64,9 @@
     {
       "civ_bonuses": "",
       "expansion": "Age of Kings",
-      "focuses": [],
+      "focuses": [
+        "Cavalry"
+      ],
       "name": "Franks",
       "team_bonus": "",
       "team_unit": "",
@@ -68,7 +79,9 @@
     {
       "civ_bonuses": "",
       "expansion": "Age of Kings",
-      "focuses": [],
+      "focuses": [
+        "Infantry"
+      ],
       "name": "Goths",
       "team_bonus": "",
       "team_unit": "",
@@ -81,7 +94,9 @@
     {
       "civ_bonuses": "",
       "expansion": "Age of Kings",
-      "focuses": [],
+      "focuses": [
+        "Infantry"
+      ],
       "name": "Japanese",
       "team_bonus": "",
       "team_unit": "",
@@ -94,7 +109,9 @@
     {
       "civ_bonuses": "",
       "expansion": "Age of Kings",
-      "focuses": [],
+      "focuses": [
+        "CavalryArcher"
+      ],
       "name": "Mongols",
       "team_bonus": "",
       "team_unit": "",
@@ -107,7 +124,9 @@
     {
       "civ_bonuses": "",
       "expansion": "Age of Kings",
-      "focuses": [],
+      "focuses": [
+        "Cavalry"
+      ],
       "name": "Persians",
       "team_bonus": "",
       "team_unit": "",
@@ -120,7 +139,10 @@
     {
       "civ_bonuses": "",
       "expansion": "Age of Kings",
-      "focuses": [],
+      "focuses": [
+        "Camel",
+        "Navy"
+      ],
       "name": "Saracens",
       "team_bonus": "",
       "team_unit": "",
@@ -133,7 +155,9 @@
     {
       "civ_bonuses": "",
       "expansion": "Age of Kings",
-      "focuses": [],
+      "focuses": [
+        "Infantry"
+      ],
       "name": "Teutons",
       "team_bonus": "",
       "team_unit": "",
@@ -146,7 +170,9 @@
     {
       "civ_bonuses": "",
       "expansion": "Age of Kings",
-      "focuses": [],
+      "focuses": [
+        "Gunpowder"
+      ],
       "name": "Turks",
       "team_bonus": "",
       "team_unit": "",
@@ -159,7 +185,10 @@
     {
       "civ_bonuses": "",
       "expansion": "Age of Kings",
-      "focuses": ["Infantry", "Navy"],
+      "focuses": [
+        "Infantry",
+        "Navy"
+      ],
       "name": "Vikings",
       "team_bonus": "",
       "team_unit": "",
@@ -172,7 +201,7 @@
     {
       "civ_bonuses": "",
       "expansion": "Conquerors",
-      "focuses": [],
+      "focuses": ["Infantry", "Monk"],
       "name": "Aztecs",
       "team_bonus": "",
       "team_unit": "",
@@ -185,7 +214,7 @@
     {
       "civ_bonuses": "",
       "expansion": "Conquerors",
-      "focuses": [],
+      "focuses": ["Cavalry"],
       "name": "Huns",
       "team_bonus": "",
       "team_unit": "",
@@ -198,7 +227,7 @@
     {
       "civ_bonuses": "",
       "expansion": "Conquerors",
-      "focuses": [],
+      "focuses": ["Defence", "Navy"],
       "name": "Koreans",
       "team_bonus": "",
       "team_unit": "",
@@ -211,7 +240,7 @@
     {
       "civ_bonuses": "",
       "expansion": "Conquerors",
-      "focuses": [],
+      "focuses": ["Archer"],
       "name": "Mayans",
       "team_bonus": "",
       "team_unit": "",
@@ -224,7 +253,7 @@
     {
       "civ_bonuses": "",
       "expansion": "Conquerors",
-      "focuses": [],
+      "focuses": ["Gunpowder", "Monk"],
       "name": "Spanish",
       "team_bonus": "",
       "team_unit": "",
@@ -237,7 +266,7 @@
     {
       "civ_bonuses": "",
       "expansion": "Forgotten",
-      "focuses": [],
+      "focuses": ["Infantry"],
       "name": "Incas",
       "team_bonus": "",
       "team_unit": "",
@@ -250,20 +279,7 @@
     {
       "civ_bonuses": "",
       "expansion": "Forgotten",
-      "focuses": [],
-      "name": "Indians",
-      "team_bonus": "",
-      "team_unit": "",
-      "unique_tech_castle": "",
-      "unique_tech_castle_effect": "",
-      "unique_tech_imperial": "",
-      "unique_tech_imperial_effect": "",
-      "unique_unit": ""
-    },
-    {
-      "civ_bonuses": "",
-      "expansion": "Forgotten",
-      "focuses": [],
+      "focuses": ["Archer", "Navy"],
       "name": "Italians",
       "team_bonus": "",
       "team_unit": "",
@@ -276,7 +292,7 @@
     {
       "civ_bonuses": "",
       "expansion": "Forgotten",
-      "focuses": [],
+      "focuses": ["Cavalry"],
       "name": "Magyars",
       "team_bonus": "",
       "team_unit": "",
@@ -289,7 +305,7 @@
     {
       "civ_bonuses": "",
       "expansion": "Forgotten",
-      "focuses": [],
+      "focuses": ["Infantry", "Siege"],
       "name": "Slavs",
       "team_bonus": "",
       "team_unit": "",
@@ -302,7 +318,7 @@
     {
       "civ_bonuses": "",
       "expansion": "African Kingdoms",
-      "focuses": [],
+      "focuses": ["Cavalry", "Navy"],
       "name": "Berbers",
       "team_bonus": "",
       "team_unit": "",
@@ -315,7 +331,7 @@
     {
       "civ_bonuses": "",
       "expansion": "African Kingdoms",
-      "focuses": [],
+      "focuses": ["Archer"],
       "name": "Ethiopians",
       "team_bonus": "",
       "team_unit": "",
@@ -328,7 +344,7 @@
     {
       "civ_bonuses": "",
       "expansion": "African Kingdoms",
-      "focuses": [],
+      "focuses": ["Infantry"],
       "name": "Malians",
       "team_bonus": "",
       "team_unit": "",
@@ -341,7 +357,7 @@
     {
       "civ_bonuses": "",
       "expansion": "African Kingdoms",
-      "focuses": [],
+      "focuses": ["Navy", "Gunpowder"],
       "name": "Portuguese",
       "team_bonus": "",
       "team_unit": "",
@@ -354,7 +370,7 @@
     {
       "civ_bonuses": "",
       "expansion": "Rise of the Rajas",
-      "focuses": [],
+      "focuses": ["Monk", "Elephant"],
       "name": "Burmese",
       "team_bonus": "",
       "team_unit": "",
@@ -367,7 +383,7 @@
     {
       "civ_bonuses": "",
       "expansion": "Rise of the Rajas",
-      "focuses": [],
+      "focuses": ["Siege", "Elephant"],
       "name": "Khmer",
       "team_bonus": "",
       "team_unit": "",
@@ -380,7 +396,7 @@
     {
       "civ_bonuses": "",
       "expansion": "Rise of the Rajas",
-      "focuses": [],
+      "focuses": ["Navy"],
       "name": "Malay",
       "team_bonus": "",
       "team_unit": "",
@@ -393,7 +409,7 @@
     {
       "civ_bonuses": "",
       "expansion": "Rise of the Rajas",
-      "focuses": [],
+      "focuses": ["Archer"],
       "name": "Vietnamese",
       "team_bonus": "",
       "team_unit": "",
@@ -406,7 +422,7 @@
     {
       "civ_bonuses": "",
       "expansion": "Definitive Edition",
-      "focuses": [],
+      "focuses": ["Infantry", "Cavalry"],
       "name": "Bulgarians",
       "team_bonus": "",
       "team_unit": "",
@@ -419,7 +435,7 @@
     {
       "civ_bonuses": "",
       "expansion": "Definitive Edition",
-      "focuses": [],
+      "focuses": ["Cavalry"],
       "name": "Cumans",
       "team_bonus": "",
       "team_unit": "",
@@ -432,7 +448,7 @@
     {
       "civ_bonuses": "",
       "expansion": "Definitive Edition",
-      "focuses": [],
+      "focuses": ["Cavalry", "Monk"],
       "name": "Lithuanians",
       "team_bonus": "",
       "team_unit": "",
@@ -445,7 +461,7 @@
     {
       "civ_bonuses": "",
       "expansion": "Definitive Edition",
-      "focuses": [],
+      "focuses": ["Cavalry"],
       "name": "Tatars",
       "team_bonus": "",
       "team_unit": "",
@@ -458,7 +474,7 @@
     {
       "civ_bonuses": "",
       "expansion": "Lords of the West",
-      "focuses": [],
+      "focuses": ["Cavalry"],
       "name": "Burgundians",
       "team_bonus": "",
       "team_unit": "",
@@ -471,8 +487,99 @@
     {
       "civ_bonuses": "",
       "expansion": "Lords of the West",
-      "focuses": [],
+      "focuses": ["Infantry", "Cavalry"],
       "name": "Sicilians",
+      "team_bonus": "",
+      "team_unit": "",
+      "unique_tech_castle": "",
+      "unique_tech_castle_effect": "",
+      "unique_tech_imperial": "",
+      "unique_tech_imperial_effect": "",
+      "unique_unit": ""
+    },
+    {
+      "civ_bonuses": "",
+      "expansion": "Dawn of the Dukes",
+      "focuses": ["Gunpowder", "Monk"],
+      "name": "Bohemians",
+      "team_bonus": "",
+      "team_unit": "",
+      "unique_tech_castle": "",
+      "unique_tech_castle_effect": "",
+      "unique_tech_imperial": "",
+      "unique_tech_imperial_effect": "",
+      "unique_unit": ""
+    },
+    {
+      "civ_bonuses": "",
+      "expansion": "Dawn of the Dukes",
+      "focuses": ["Cavalry"],
+      "name": "Poles",
+      "team_bonus": "",
+      "team_unit": "",
+      "unique_tech_castle": "",
+      "unique_tech_castle_effect": "",
+      "unique_tech_imperial": "",
+      "unique_tech_imperial_effect": "",
+      "unique_unit": ""
+    },
+    {
+      "civ_bonuses": "",
+      "expansion": "Dynasties of India",
+      "focuses": ["Elephant", "Navy"],
+      "name": "Bengalis",
+      "team_bonus": "",
+      "team_unit": "",
+      "unique_tech_castle": "",
+      "unique_tech_castle_effect": "",
+      "unique_tech_imperial": "",
+      "unique_tech_imperial_effect": "",
+      "unique_unit": ""
+    },
+    {
+      "civ_bonuses": "",
+      "expansion": "Dynasties of India",
+      "focuses": ["Infantry", "Navy"],
+      "name": "Dravidians",
+      "team_bonus": "",
+      "team_unit": "",
+      "unique_tech_castle": "",
+      "unique_tech_castle_effect": "",
+      "unique_tech_imperial": "",
+      "unique_tech_imperial_effect": "",
+      "unique_unit": ""
+    },
+    {
+      "civ_bonuses": "",
+      "expansion": "Dynasties of India",
+      "focuses": ["Cavalry", "Camel"],
+      "name": "Gurjaras",
+      "team_bonus": "",
+      "team_unit": "",
+      "unique_tech_castle": "",
+      "unique_tech_castle_effect": "",
+      "unique_tech_imperial": "",
+      "unique_tech_imperial_effect": "",
+      "unique_unit": ""
+    },
+    {
+      "civ_bonuses": "",
+      "expansion": "Dynasties of India",
+      "focuses": ["Camel", "Gunpowder"],
+      "name": "Hindustanis",
+      "team_bonus": "",
+      "team_unit": "",
+      "unique_tech_castle": "",
+      "unique_tech_castle_effect": "",
+      "unique_tech_imperial": "",
+      "unique_tech_imperial_effect": "",
+      "unique_unit": ""
+    },
+    {
+      "civ_bonuses": "",
+      "expansion": "Return of Rome",
+      "focuses": ["Infantry"],
+      "name": "Romans",
       "team_bonus": "",
       "team_unit": "",
       "unique_tech_castle": "",

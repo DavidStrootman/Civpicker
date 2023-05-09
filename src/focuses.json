@@ -1,0 +1,37 @@
+{
+  "focuses": [
+    {
+      "name": "Archer"
+    },
+    {
+      "name": "Camel"
+    },
+    {
+      "name": "Cavalry"
+    },
+    {
+      "name": "CavalryArcher"
+    },
+    {
+      "name": "Defence"
+    },
+    {
+      "name": "Elephant"
+    },
+    {
+      "name": "Gunpowder"
+    },
+    {
+      "name": "Infantry"
+    },
+    {
+      "name": "Monk"
+    },
+    {
+      "name": "Navy"
+    },
+    {
+      "name": "Siege"
+    }
+  ]
+}
