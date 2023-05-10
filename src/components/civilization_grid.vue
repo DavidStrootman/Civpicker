@@ -128,21 +128,28 @@ export default {
                              incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" :min="1"
                              :max="8"
                              v-on:click.stop/>
-
-                <span class="p-input-icon-left"
-                      v-on:click.stop>
-                          <i class="pi pi-search"/>
-                          <InputText v-model="filter" @update:modelValue="filter_civs()" placeholder="Filter"
-                                     v-on:keydown.stop/>
+                <div class="flex w-min">
+                    <div class="flex w-12rem">
+                        <span class="p-input-icon-left"
+                              v-on:click.stop>
+                              <i class="pi pi-search"/>
+                              <InputText class="w-full" v-model="filter" @update:modelValue="filter_civs()"
+                                         placeholder="Filter"
+                                         v-on:keydown.stop/>
                         </span>
-                <span class="p-buttonset">
-                    <Button outlined label="Select None"
-                            @click="civ_session.selected_civs = civ_session.selected_civs.filter(civ => !filtered_civs.includes( civ ) );"
-                            v-on:click.stop/>
-                    <Button outlined label="Select All"
-                            @click="filtered_civs.forEach(civ => (!civ_session.selected_civs.includes(civ)) ? civ_session.selected_civs.push(civ) : null)"
-                            v-on:click.stop/>
-                </span>
+                    </div>
+                </div>
+                <div>
+                    <span class="p-buttonset">
+                        <Button outlined label="Select None"
+                                @click="civ_session.selected_civs = civ_session.selected_civs.filter(civ => !filtered_civs.includes( civ ) );"
+                                v-on:click.stop/>
+                        <Button outlined label="Select All"
+                                @click="filtered_civs.forEach(civ => (!civ_session.selected_civs.includes(civ)) ? civ_session.selected_civs.push(civ) : null)"
+                                v-on:click.stop/>
+                    </span>
+
+                </div>
             </div>
         </template>
 

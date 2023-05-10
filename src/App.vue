@@ -8,8 +8,8 @@ export default {
     methods: {
         toggleTheme() {
             let nextTheme = '';
-            if (this.currentTheme === 'soho-light-red') nextTheme = 'soho-dark';
-            else if (this.currentTheme === 'soho-dark') nextTheme = 'soho-light-red';
+            if (this.currentTheme === 'viva-light') nextTheme = 'viva-dark';
+            else if (this.currentTheme === 'viva-dark') nextTheme = 'viva-light';
 
             // @ts-ignore
             this.$primevue.changeTheme(this.currentTheme, nextTheme, 'light-mode', () => {
@@ -24,7 +24,7 @@ export default {
     },
     data() {
         return {
-            currentTheme: "soho-light-red",
+            currentTheme: "viva-light",
         }
     }
 };
@@ -32,9 +32,8 @@ export default {
 
 
 <template>
-    <p class="header-logo text-4xl">Gagnismaðr</p>
     <Button ref="theme-toggle" class="absolute mx-6 my-4 right-0 top-0"
-            :icon="currentTheme === 'soho-light' ? 'pi pi-moon' : 'pi pi-sun'" text rounded
+            :icon="currentTheme === 'viva-light' ? 'pi pi-moon' : 'pi pi-sun'" text rounded
             aria-label="Theme" @click="toggleTheme()"/>
     <civilization_grid/>
 </template>
