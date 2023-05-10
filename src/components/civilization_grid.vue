@@ -1,8 +1,6 @@
 <script lang="ts">
 import unpopulated_civs from "../civilizations.json"
 import focuses from "../focuses.json"
-import {Civ} from "../models/civ.ts"
-import {CivSession} from "../models/civ_session.ts"
 import '../assets/styles/civilizations.css'
 import 'primeicons/primeicons.css'
 import DataView from 'primevue/dataview';
@@ -17,6 +15,8 @@ import Toolbar from "primevue/toolbar";
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
 import Card from "primevue/card";
+import {useStore} from "../models/store.ts";
+
 
 function fuzzy_filter(target: string, filter: string) {
     var hay = target.toLowerCase(), i = 0, n = -1, l;
@@ -46,11 +46,9 @@ export default {
         return {
             // TODO: Create session in App.vue and pass it to this component.
             // TODO: Remember selected and played civs.
+            store: useStore(),
             unpopulated_civs,
             focuses,
-            civ_session: new CivSession([], []),
-            civilizations: [] as Array<Civ>,
-            random_civs: [] as Array<string>,
             random_count: 1,
             filter: "",
             filtered_civs: [] as Array<string>,
@@ -59,24 +57,11 @@ export default {
         }
     },
     beforeMount() {
-        const selected_civs: Array<string> = []
-        for (let unpopulated_civ of unpopulated_civs.civilizations.reverse()) {
-            this.civilizations.push(
-                new Civ({
-                    name: unpopulated_civ.name,
-                    expansion: unpopulated_civ.expansion,
-                    focuses: unpopulated_civ.focuses,
-                })
-            )
-            selected_civs.push(unpopulated_civ.name)
-            this.filtered_civs.push(unpopulated_civ.name)
-        }
-        this.civ_session = new CivSession(selected_civs, [])
         this.filter_civs()
     },
     methods: {
         filter_civs() {
-            for (const civ of this.civilizations) {
+            for (const civ of this.store.civilizations) {
                 let through_filter: boolean = fuzzy_filter(civ.name, this.filter)
                 if (this.filtered_civs.includes(civ.name)) {
                     !through_filter ? this.filtered_civs.splice(this.filtered_civs.indexOf(civ.name), 1) : null
@@ -86,11 +71,11 @@ export default {
             }
         },
         generate_random_civs() {
-            this.random_civs = []
+            this.store.random_civs = []
 
-            if (this.civ_session.selected_civs.length != 0) {
+            if (this.store.civ_session.selected_civs.length != 0) {
                 for (let i = 0; i < this.random_count; ++i) {
-                    this.random_civs.push(this.civ_session.selected_civs[Math.floor(Math.random() * this.civ_session.selected_civs.length)]);
+                    this.store.random_civs.push(this.store.civ_session.selected_civs[Math.floor(Math.random() * this.store.civ_session.selected_civs.length)]);
                 }
             }
         },
@@ -109,8 +94,8 @@ export default {
 
 
 <template>
-    <TabView v-model:activeIndex="activeTab" v-if="random_civs.length != 0">
-        <TabPanel v-for="[key, civ] of random_civs.entries()" :key="key" :header="`${key+1}: ${civ}`">
+    <TabView v-model:activeIndex="activeTab" v-if="store.random_civs.length != 0">
+        <TabPanel v-for="[key, civ] of store.random_civs.entries()" :key="key" :header="`${key+1}: ${civ}`">
             <p>{{ civ }}</p>
         </TabPanel>
     </TabView>
@@ -142,10 +127,10 @@ export default {
                 <div>
                     <span class="p-buttonset">
                         <Button outlined label="Select None"
-                                @click="civ_session.selected_civs = civ_session.selected_civs.filter(civ => !filtered_civs.includes( civ ) );"
+                                @click="store.civ_session.selected_civs = store.civ_session.selected_civs.filter(civ => !filtered_civs.includes( civ ) );"
                                 v-on:click.stop/>
                         <Button outlined label="Select All"
-                                @click="filtered_civs.forEach(civ => (!civ_session.selected_civs.includes(civ)) ? civ_session.selected_civs.push(civ) : null)"
+                                @click="filtered_civs.forEach(civ => (!store.civ_session.selected_civs.includes(civ)) ? store.civ_session.selected_civs.push(civ) : null)"
                                 v-on:click.stop/>
                     </span>
 
@@ -177,18 +162,18 @@ export default {
 
     <Card>
         <template #content>
-            <DataView :dataKey="undefined" :value="civilizations" :layout="'grid'">
+            <DataView :dataKey="undefined" :value="store.civilizations" :layout="'grid'">
                 <template class="border-round" #grid="{data}">
                     <div v-if="filtered_civs.includes(data.name)"
                          class="col-12 sm:col-6 lg:col-4 xl:col-3 p-2">
-                        <div @click="civ_session.selected_civs.includes(data.name) ? civ_session.selected_civs.splice(civ_session.selected_civs.indexOf(data.name), 1) : civ_session.selected_civs.push(data.name)"
-                             v-bind:class="{'surface-hover': civ_session.selected_civs.includes(data.name),
-                                    'surface-card': !civ_session.selected_civs.includes(data.name)}"
+                        <div @click="store.civ_session.selected_civs.includes(data.name) ? store.civ_session.selected_civs.splice(store.civ_session.selected_civs.indexOf(data.name), 1) : store.civ_session.selected_civs.push(data.name)"
+                             v-bind:class="{'surface-hover': store.civ_session.selected_civs.includes(data.name),
+                                    'surface-card': !store.civ_session.selected_civs.includes(data.name)}"
                              class="border-1 relative h-7rem surface-border border-round"
                              style="cursor: pointer">
                             <div class="flex absolute left-0 top-0" v-on:click="$event.stopPropagation()">
                                 <Checkbox :ref="`checkbox_${data.name}`"
-                                          v-model="civ_session.selected_civs"
+                                          v-model="store.civ_session.selected_civs"
                                           :value="data.name"
                                           :inputClass="['border-top-none', 'border-left-none','border-right-1', 'border-bottom-1']"
                                           :inputStyle="{'border-radius':' var(--border-radius) 0 var(--border-radius) 0'}"/>
