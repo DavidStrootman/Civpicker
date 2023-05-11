@@ -16,6 +16,7 @@ import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
 import Card from "primevue/card";
 import {useStore} from "../models/store.ts";
+import {Civ} from "../models/civ.ts";
 
 
 function fuzzy_filter(target: string, filter: string) {
@@ -51,7 +52,7 @@ export default {
             focuses,
             random_count: 1,
             filter: "",
-            filtered_civs: [] as Array<string>,
+            filtered_civs: [] as Array<Civ>,
             accordionActiveIndex: -1,
             activeTab: 0
         }
@@ -63,10 +64,10 @@ export default {
         filter_civs() {
             for (const civ of this.store.civilizations) {
                 let through_filter: boolean = fuzzy_filter(civ.name, this.filter)
-                if (this.filtered_civs.includes(civ.name)) {
-                    !through_filter ? this.filtered_civs.splice(this.filtered_civs.indexOf(civ.name), 1) : null
+                if (this.filtered_civs.includes(civ)) {
+                    !through_filter ? this.filtered_civs.splice(this.filtered_civs.indexOf(civ), 1) : null
                 } else {
-                    through_filter ? this.filtered_civs.push(civ.name) : null
+                    through_filter ? this.filtered_civs.push(civ) : null
                 }
             }
         },
@@ -95,8 +96,39 @@ export default {
 
 <template>
     <TabView v-model:activeIndex="activeTab" v-if="store.random_civs.length != 0">
-        <TabPanel v-for="[key, civ] of store.random_civs.entries()" :key="key" :header="`${key+1}: ${civ}`">
-            <p>{{ civ }}</p>
+        <TabPanel v-for="[key, civ] of store.random_civs.entries()" :key="key" :header="`${key+1}: ${civ.name}`">
+            <div class="col-12 sm:col-6 lg:col-4 xl:col-3 p-2">
+                <div class="surface-hover relative h-7rem">
+                    <div class="flex align-content-center justify-content-center surface-hover w-3rem absolute left-0 top-0 p-1"
+                         v-tooltip.bottom="civ.expansion">
+                        <div class="flex">
+                            <img class="text-300 w-1rem"
+                                 style="font-size: 0.8rem"
+                                 :src="`./images/expansions/${civ.expansion.replace(/ /g,'_')}.webp`"
+                                 :alt="civ.expansion"/>
+                        </div>
+                    </div>
+                    <div class="flex pl-6 pr-3 h-full justify-content-between align-content-center align-items-center">
+                        <div class="flex gap-2 align-items-center">
+                            <img class="max-w-2rem"
+                                 :src="`./images/civilizations/CivIcon-${civ.name}.webp`"
+                                 :alt="civ.name"
+                                 :title="civ.name"/>
+                            <div class="text-xl font-bold">{{ civ.name }}</div>
+                        </div>
+                        <div class="flex gap-2 max-w-2rem p-1 -m-1 mr-2 flex-column"
+                             v-if="civ.focuses.length > 0">
+                            <template v-for="focus of civ.focuses">
+                                <img class="border-round shadow-4"
+                                     :src="`./images/focuses/${focus}.webp`"
+                                     :alt="focus"
+                                     v-tooltip.right="focus"
+                                />
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </TabPanel>
     </TabView>
     <Toolbar class="surface-ground border-0 border-none">
@@ -127,7 +159,7 @@ export default {
                 <div>
                     <span class="p-buttonset">
                         <Button outlined label="Select None"
-                                @click="store.civ_session.selected_civs = store.civ_session.selected_civs.filter(civ => !filtered_civs.includes( civ ) );"
+                                @click="store.civ_session.selected_civs = store.civ_session.selected_civs.filter(civ => !filtered_civs.map(({name}) => name).includes( civ.name ) );"
                                 v-on:click.stop/>
                         <Button outlined label="Select All"
                                 @click="filtered_civs.forEach(civ => (!store.civ_session.selected_civs.includes(civ)) ? store.civ_session.selected_civs.push(civ) : null)"
@@ -145,7 +177,6 @@ export default {
             </div>
         </template>
     </Toolbar>
-
     <Accordion v-model:activeIndex="accordionActiveIndex" expandIcon="pi pi-angle-left">
         <AccordionTab :pt="{headerAction: {class: 'flex-row-reverse hidden'},
                             content: {class: 'surface-ground border-none'}}">
@@ -159,22 +190,23 @@ export default {
             </div>
         </AccordionTab>
     </Accordion>
-
     <Card>
         <template #content>
+<!--            {{store.civ_session.selected_civs}}-->
             <DataView :dataKey="undefined" :value="store.civilizations" :layout="'grid'">
                 <template class="border-round" #grid="{data}">
-                    <div v-if="filtered_civs.includes(data.name)"
+                    <div
                          class="col-12 sm:col-6 lg:col-4 xl:col-3 p-2">
-                        <div @click="store.civ_session.selected_civs.includes(data.name) ? store.civ_session.selected_civs.splice(store.civ_session.selected_civs.indexOf(data.name), 1) : store.civ_session.selected_civs.push(data.name)"
-                             v-bind:class="{'surface-hover': store.civ_session.selected_civs.includes(data.name),
-                                    'surface-card': !store.civ_session.selected_civs.includes(data.name)}"
+<!--                        TODO: Fix these botched lookups using name on arrays of Civ objects-->
+                        <div @click="store.civ_session.selected_civs.map(({name}) => name).includes(data.name) ? store.civ_session.selected_civs.splice(store.civ_session.selected_civs.map(({name}) => name).indexOf(data.name), 1) : store.civ_session.selected_civs.push(data)"
+                             v-bind:class="{'surface-hover': store.civ_session.selected_civs.map(({name}) => name).includes(data.name),
+                                    'surface-card': !store.civ_session.selected_civs.map(({name}) => name).includes(data.name)}"
                              class="border-1 relative h-7rem surface-border border-round"
                              style="cursor: pointer">
                             <div class="flex absolute left-0 top-0" v-on:click="$event.stopPropagation()">
                                 <Checkbox :ref="`checkbox_${data.name}`"
                                           v-model="store.civ_session.selected_civs"
-                                          :value="data.name"
+                                          :value="data"
                                           :inputClass="['border-top-none', 'border-left-none','border-right-1', 'border-bottom-1']"
                                           :inputStyle="{'border-radius':' var(--border-radius) 0 var(--border-radius) 0'}"/>
                             </div>

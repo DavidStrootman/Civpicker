@@ -19,8 +19,8 @@ function load_civs() {
 }
 
 function populate_session(civilizations: Array<Civ>) {
-    const civs: Array<string> = []
-    civilizations.forEach((civ) => civs.push(civ.name))
+    const civs: Array<Civ> = []
+    civilizations.forEach((civ) => civs.push(civ))
     return new CivSession(civs, [])
 }
 
@@ -30,7 +30,7 @@ export const useStore = defineStore('main', {
         return {
             civilizations: load_civs(),
             civ_session: populate_session(load_civs()),
-            random_civs: [] as Array<string>,
+            random_civs: [] as Array<Civ>,
             theme: 'viva-light' as string
         }
     },
