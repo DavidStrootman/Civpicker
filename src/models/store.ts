@@ -3,7 +3,7 @@ import {CivSession} from "./civ_session.ts";
 import unpopulated_civs from "../civilizations.json";
 import {Civ} from "./civ.ts";
 
-function populate_civs() {
+function load_civs() {
     const civs: Array<Civ> = []
 
     for (let unpopulated_civ of unpopulated_civs.civilizations.reverse()) {
@@ -28,9 +28,10 @@ export const useStore = defineStore('main', {
     actions: {},
     state: () => {
         return {
-            civilizations: populate_civs(),
-            civ_session: populate_session(populate_civs()),
+            civilizations: load_civs(),
+            civ_session: populate_session(load_civs()),
             random_civs: [] as Array<string>,
+            theme: 'viva-light' as string
         }
     },
     persist: true,

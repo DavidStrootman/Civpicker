@@ -1,5 +1,5 @@
 import {createApp} from 'vue'
-import { createPinia } from 'pinia'
+import {createPinia} from 'pinia'
 import './style.css'
 // @ts-ignore
 import App from './App.vue'
@@ -11,8 +11,6 @@ import 'primeflex/primeflex.css';
 import 'primeicons/primeicons.css';
 import Button from "primevue/button";
 import Tooltip from 'primevue/tooltip';
-
-
 
 const app = createApp(App)
 app.use(PrimeVue, {ripple: true});
