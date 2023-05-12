@@ -2,6 +2,7 @@
 
 import civilization_grid from "./components/civilization_grid.vue";
 import Button from "primevue/button";
+import Message from "primevue/message";
 import {useStore} from "./models/store.ts";
 
 export default {
@@ -14,7 +15,7 @@ export default {
             })
         },
         toggleTheme() {
-            // TODO: Do this in a non-idiotic way. Also fix the icons having the themes hardcoded.
+            // TODO: Do this in a non-idiotic way. Also fix the icons toggling based on hardcoded themes.
             let nextTheme = '';
             if (this.store.theme === 'viva-light') nextTheme = 'viva-dark';
             else if (this.store.theme === 'viva-dark') nextTheme = 'viva-light';
@@ -31,7 +32,8 @@ export default {
     },
     components: {
         Button,
-        civilization_grid
+        civilization_grid,
+        Message
     },
     data() {
         return {
@@ -43,8 +45,12 @@ export default {
 
 
 <template>
-    <Button ref="theme-toggle" class="absolute mx-6 my-4 right-0 top-0"
-            :icon="store.theme === 'viva-light' ? 'pi pi-moon' : 'pi pi-sun'" text rounded
-            aria-label="Theme" @click="toggleTheme()"/>
-    <civilization_grid/>
+<!--    <Message severity="info" icon="pi pi-wrench">This site uses functional cookies-->
+<!--    </Message>-->
+    <div class="flex flex-column app-wrapper w-full h-full justify-content-center">
+        <Button ref="theme-toggle" class="absolute mx-6 my-4 right-0 top-0"
+                :icon="store.theme === 'viva-light' ? 'pi pi-moon' : 'pi pi-sun'" text rounded
+                aria-label="Theme" @click="toggleTheme()"/>
+        <civilization_grid/>
+    </div>
 </template>
