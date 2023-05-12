@@ -213,7 +213,7 @@ export default {
                       :value="store.civilizations"
                       :layout="'grid'">
                 <template class="border-round" #grid="{data}">
-                    <div class="col-12 sm:col-6 lg:col-4 xl:col-3 p-2">
+                    <div v-if="filtered_civs.map(({name}) => name).includes(data.name)" class="col-12 sm:col-6 lg:col-4 xl:col-3 p-2">
                         <!--                        TODO: Fix these botched lookups using name on arrays of Civ objects-->
                         <div @click="store.civ_session.selected_civs.map(({name}) => name).includes(data.name) ? store.civ_session.selected_civs.splice(store.civ_session.selected_civs.map(({name}) => name).indexOf(data.name), 1) : store.civ_session.selected_civs.push(data)"
                              v-bind:class="{'surface-hover': store.civ_session.selected_civs.map(({name}) => name).includes(data.name),
