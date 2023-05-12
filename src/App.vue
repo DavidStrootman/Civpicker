@@ -47,7 +47,7 @@ export default {
 <template>
 <!--    <Message severity="info" icon="pi pi-wrench">This site uses functional cookies-->
 <!--    </Message>-->
-    <div class="flex flex-column app-wrapper w-full h-full justify-content-center">
+    <div class="flex flex-column app-wrapper w-full h-full justify-content-start">
         <Button ref="theme-toggle" class="absolute mx-6 my-4 right-0 top-0"
                 :icon="store.theme === 'viva-light' ? 'pi pi-moon' : 'pi pi-sun'" text rounded
                 aria-label="Theme" @click="toggleTheme()"/>
