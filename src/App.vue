@@ -45,8 +45,10 @@ export default {
 
 
 <template>
-<!--    <Message severity="info" icon="pi pi-wrench">This site uses functional cookies-->
-<!--    </Message>-->
+    <div class="absolute z-2 bottom-0 right-0 mr-6 mb-3" v-if="!store.cookiesConfirmed">
+        <Message @close="store.cookiesConfirmed=true" class="w-11 m-4 border-1 bg-secondary" severity="info"
+                 icon="pi pi-wrench">This site uses functional cookies</Message>
+    </div>
     <div class="flex flex-column app-wrapper w-full h-full justify-content-start">
         <Button ref="theme-toggle" class="absolute mx-6 my-4 right-0 top-0"
                 :icon="store.theme === 'viva-light' ? 'pi pi-moon' : 'pi pi-sun'" text rounded

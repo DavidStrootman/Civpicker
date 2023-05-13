@@ -28,6 +28,7 @@ export const useStore = defineStore('main', {
     actions: {},
     state: () => {
         return {
+            cookiesConfirmed: false,
             civilizations: load_civs(),
             civ_session: populate_session(load_civs()),
             random_civs: [] as Array<Civ>,
