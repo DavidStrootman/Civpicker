@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
-import {CivSession} from "./civ_session.ts";
 import unpopulated_civs from "../civilizations.json";
 import {Civ} from "./civ.ts";
+import {CivData} from "./civ_data.ts";
 
 function load_civs() {
     const civs: Array<Civ> = []
@@ -18,10 +18,10 @@ function load_civs() {
     return civs
 }
 
-function populate_session(civilizations: Array<Civ>) {
-    const civs: Array<Civ> = []
-    civilizations.forEach((civ) => civs.push(civ))
-    return new CivSession(civs, [])
+function populate_civ_data(civilizations: Array<Civ>): Array<CivData> {
+    const civsData: Array<CivData> = []
+    civilizations.forEach((civ) => civsData.push(new CivData(civ)))
+    return civsData
 }
 
 export const useStore = defineStore('main', {
@@ -30,7 +30,7 @@ export const useStore = defineStore('main', {
         return {
             cookiesConfirmed: false,
             civilizations: load_civs(),
-            civ_session: populate_session(load_civs()),
+            civ_session_data: populate_civ_data(load_civs()),
             random_civs: [] as Array<Civ>,
             theme: 'viva-light' as string
         }
