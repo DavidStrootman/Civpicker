@@ -32,4 +32,8 @@ body {
     -moz-user-select: none;    
     -ms-user-select: none;      
     user-select: none;
-  }
+}
+
+.civ-card-active {
+    background-color: var(--highlight-bg)
+}

@@ -7,6 +7,7 @@ import 'primeicons/primeicons.css'
 import DataView from 'primevue/dataview';
 import DataViewLayoutOptions from 'primevue/dataviewlayoutoptions'
 import Checkbox from "primevue/checkbox";
+import InputSwitch from "primevue/inputswitch";
 import InputText from "primevue/inputtext";
 import InputNumber from "primevue/inputnumber";
 import Slider from "primevue/slider";
@@ -16,6 +17,7 @@ import Toolbar from "primevue/toolbar";
 import Card from "primevue/card";
 import { useStore } from "../models/store.ts";
 import { CivData } from "../models/civ_data"
+import { Civ } from "../models/civ"
 
 
 function fuzzy_filter(target: string, filter: string) {
@@ -24,14 +26,15 @@ function fuzzy_filter(target: string, filter: string) {
     for (; l = filter[i++];) if (!~(n = hay.indexOf(l, n + 1))) return false;
     return true;
 }
-
-// TODO: add overlayPanel and/or dynamicDialog for civs with information on the civ
+// TODO: add an animation for when all civs have been played.
+// TODO: add overlayPanel and/or dynamicDialog for civs with information on the civ.
 export default {
     name: "civilization_grid",
     components: {
         DataView,
         DataViewLayoutOptions,
         Checkbox,
+        InputSwitch,
         InputText,
         InputNumber,
         Slider,
@@ -50,7 +53,8 @@ export default {
             random_count: 1,
             filter: "",
             accordionActiveIndex: -1,
-            activeTab: 0
+            activeTab: 0,
+            resetClicked: false
         }
     },
     beforeMount() {
@@ -66,7 +70,11 @@ export default {
         generate_random_civs() {
             this.store.random_civs = []
 
-            const selected_civs = this.store.civ_session_data.filter((civ: CivData) => civ.selected)
+            let selected_civs = this.store.civ_session_data.filter((civ: CivData) => civ.selected)
+
+            if (!this.store.allow_played_civs) {
+                selected_civs = selected_civs.filter((civ: CivData) => !civ.played)
+            }
 
             if (selected_civs.length != 0) {
                 for (let i = 0; i < this.random_count; ++i) {
@@ -77,13 +85,23 @@ export default {
         toggle_accordion() {
             this.accordionActiveIndex = this.accordionActiveIndex === 0 ? -1 : 0;
         },
-        deselectAll() {
-            // Set all civs that are visible through the filter to unselected.
-            this.store.civ_session_data.filter((civ: CivData) => civ.visible).forEach((civ: CivData) => civ.selected = false);
-        },
         selectAll() {
             // Set all civs that are visible through the filter to selected.
-            this.store.civ_session_data.filter((civ: CivData) => civ.visible).forEach((civ: CivData) => civ.selected = true);
+            this.store.civ_session_data.filter((civData: CivData) => civData.visible).forEach((civData: CivData) => civData.selected = true);
+        },
+        deselectAll() {
+            // Set all civs that are visible through the filter to unselected.
+            this.store.civ_session_data.filter((civData: CivData) => civData.visible).forEach((civData: CivData) => civData.selected = false);
+        },
+        toggleFocus(focus: string) {
+            const civs = this.store.civ_session_data.filter((civData: CivData) => civData.civ.focuses.includes(focus));
+            const allSelected = civs.every((civData: CivData) => civData.selected);
+            civs.forEach((civData: CivData) => civData.selected = !allSelected);
+        },
+        toggleExpansion(expansion: string) {
+            const civs = this.store.civ_session_data.filter((civData: CivData) => civData.civ.expansion === expansion);
+            const allSelected = civs.every((civData: CivData) => civData.selected);
+            civs.forEach((civData: CivData) => civData.selected = !allSelected);
         },
         toggleSelected(data: CivData) {
             // Toggle the selected state of the civ.
@@ -93,16 +111,33 @@ export default {
             // Toggle the played state of the civ.
             data.played = !data.played;
         },
+        resetButtonClick() {
+            if (!this.resetClicked) {
+                this.resetClicked = true;
+                return
+            }
+            else {
+                this.resetClicked = false;
+                this.store.$reset();
+            }
+        }
     },
     computed: {
         randomSelectedCivDatas() {
             const { civ_session_data, random_civs } = this.store;
-            return civ_session_data.filter(({ civ }) => random_civs.map(({ name }) => name).includes(civ.name));
+            let out_civs: Array<CivData> = [];
+            random_civs.forEach((civ: Civ) => {
+                const civData = civ_session_data.find((civData: CivData) => civData.civ.name === civ.name);
+                if (civData) {
+                    out_civs.push(civData);
+                }
+            });
+            return out_civs;
         },
-        civClass() {
+        civCardClass() {
             return (data: CivData) => {
                 return {
-                    'surface-hover': data.selected,
+                    'civ-card-active': data.selected,
                     'surface-card': !data.selected
                 };
             };
@@ -124,7 +159,35 @@ export default {
                     'pi-undo': data.played,
                 }
             }
-        }
+        },
+        playButtonTooltip() {
+            return (played: boolean) => {
+                return played ? 'Undo' : 'Play';
+            }
+        },
+        expansionButtonClass() {
+            return (expansion: string) => {
+                const civs = this.store.civ_session_data.filter((civData: CivData) => civData.civ.expansion === expansion);
+                const allSelected = civs.every((civData: CivData) => civData.selected);
+                return {
+                    'bg-primary': allSelected,
+                    'surface-card': !allSelected
+                }
+            }
+        },
+        focusButtonClass() {
+            return (filter: string) => {
+                const civs = this.store.civ_session_data.filter((civData: CivData) => civData.civ.focuses.includes(filter));
+                const allSelected = civs.every((civData: CivData) => civData.selected);
+                return {
+                    'bg-primary': allSelected,
+                    'surface-card': !allSelected
+                }
+            }
+        },
+        resetLabel() {
+            return this.resetClicked ? 'Are you sure?' : 'Reset';
+        },
     }
 }
 </script>
@@ -133,9 +196,9 @@ export default {
 <template>
     <div
         class="flex flex-row flex-wrap w-full relative mb-3 sm:justify-content-center xl:justify-content-start border-round top-0 left-0 bg-primary">
-        <div class="surface-card relative border-round m-2" v-for="[key, civData] of randomSelectedCivDatas.entries()">
+        <div class="surface-card relative border-round m-2" v-for="[key, civData] of randomSelectedCivDatas.entries()"> 
             <div class="flex p-1 h-full gap-2 justify-content-between align-content-center align-items-center">
-                <div>
+                <div v-tooltip.bottom="playButtonTooltip(civData.played)">
                     <Button @click="togglePlayed(civData)" text>
                         <i class="pi" :class="playedButtonClass(civData)"></i>
                     </Button>
@@ -188,8 +251,8 @@ export default {
 
         <template #end>
             <div class="flex align-items-center">
-                <Button @click="toggle_accordion()" icon-pos="right" label="Filters" severity="help" icon="pi pi-filter"
-                    text />
+                <Button @click="toggle_accordion()" icon-pos="right" label="Filters and Options" severity="help"
+                    icon="pi pi-filter" text />
             </div>
         </template>
     </Toolbar>
@@ -206,14 +269,14 @@ export default {
                     <div>
                         <p>Focuses</p>
                         <div class="grid w-28rem h-12rem">
-                            <template v-for="focus of focuses.focuses">
+                            <template v-for="{ name } of focuses.focuses">
                                 <div class="col-2">
-                                    <div
-                                        class="flex bg-primary border-round w-4rem h-4rem align-items-center justify-content-center">
-                                        <img class="border-round shadow-4 h-3rem w-3rem"
-                                            :src="`./images/focuses/${focus.name}.webp`" :alt="focus.name"
-                                            v-tooltip.bottom="focus.name" />
-                                    </div>
+                                    <Button @click="toggleFocus(name)"
+                                        class="flex border-round shadow-1 border-none w-4rem h-4rem align-items-center justify-content-center"
+                                        :class="focusButtonClass(name)">
+                                        <img class="border-round h-3rem w-3rem" :src="`./images/focuses/${name}.webp`"
+                                            :alt="name" v-tooltip.bottom="name" />
+                                    </Button>
                                 </div>
                             </template>
                         </div>
@@ -223,16 +286,33 @@ export default {
                     <div>
                         <p>Expansions</p>
                         <div class="grid w-28rem h-12rem">
-                            <template v-for="expansion of expansions.expansions">
+                            <template v-for="{ name } of expansions.expansions">
                                 <div class="col-2">
-                                    <div
-                                        class="flex bg-primary border-round w-4rem h-4rem align-items-center justify-content-center">
-                                        <img class="border-round shadow-4 h-3rem w-3rem"
-                                            :src="`./images/expansions/${expansion.name.replace(/ /g, '_')}.webp`"
-                                            :alt="expansion.name" v-tooltip.bottom="expansion.name" />
-                                    </div>
+                                    <Button @click="toggleExpansion(name)"
+                                        class="flex border-round shadow-1 border-none w-4rem h-4rem align-items-center justify-content-center"
+                                        :class="expansionButtonClass(name)">
+                                        <img class="border-round h-3rem w-3rem"
+                                            :src="`./images/expansions/${name.replace(/ /g, '_')}.webp`" :alt="name"
+                                            v-tooltip.bottom="name" />
+                                    </Button>
                                 </div>
                             </template>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full surface-hover border-round p-4 justify-content-center">
+                    <div>
+                        <p class="text-xl font-bold m-0">Options</p>
+                        <div class="flex flex-row gap-6">
+                            <div class="col-6">
+                                <p>Allow Generating Previously Played Civs</p>
+                                <InputSwitch v-model="store.allow_played_civs" />
+                            </div>
+                            <div class="col-6">
+                                <p>Reset All Settings</p>
+                                <Button @click="resetButtonClick()" icon="pi pi-refresh"
+                                    :severity="!resetClicked ? 'primary' : 'danger'" :label="resetLabel" />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -240,7 +320,7 @@ export default {
         </AccordionTab>
     </Accordion>
 
-    <Card class="overflow-y-scroll h-max border-none shadow-none" style="border-radius: 0; scrollbar-width: none;" :pt="{
+    <Card class="overflow-y-scroll h-max border-none shadow-none" style="border-radius: 0;" :pt="{
         body: { class: 'py-0' },
         content: { class: 'py-0' }
     }">
@@ -248,7 +328,7 @@ export default {
             <DataView :dataKey="undefined" :value="store.civ_session_data" :layout="'grid'">
                 <template class="border-round" #grid="{ data }: { data: CivData }">
                     <div v-if="data.visible" class="col-12 sm:col-6 lg:col-4 xl:col-3 p-2">
-                        <div @click="toggleSelected(data)" :class="civClass(data)"
+                        <div @click="toggleSelected(data)" :class="civCardClass(data)"
                             class="border-1 relative h-7rem surface-border border-round no-text-select"
                             style="cursor: pointer">
                             <div class="flex absolute left-0 top-0" v-on:click="$event.stopPropagation()">
@@ -259,9 +339,8 @@ export default {
 
                             <div @click="togglePlayed(data); $event.stopPropagation();" :class="playedClass(data)"
                                 class="flex absolute right-0 top-0 px-3 gap-2 align-content-center justify-content-center"
-                                style="padding-top: 0.1rem; padding-bottom: 0.1rem; font-size: 0.7rem; border-radius: 0 var(--border-radius) 0 var(--border-radius); 
-                                                                                    outline: 1px solid var(--surface-border)">
-                                <div>
+                                style="padding-top: 0.1rem; padding-bottom: 0.1rem; font-size: 0.7rem; border-radius: 0 var(--border-radius) 0 var(--border-radius); outline: 1px solid var(--surface-border)">
+                                <div v-tooltip.bottom="playButtonTooltip(data.played)">
                                     <i class="pi" :class="playedButtonClass(data)" style="font-size: 0.7rem;"></i>
                                 </div>
                                 <p class="m-0 no-text-select"><template v-if="!data.played">Play</template><template
