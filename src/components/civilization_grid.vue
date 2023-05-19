@@ -88,7 +88,11 @@ export default {
         toggleSelected(data: CivData) {
             // Toggle the selected state of the civ.
             data.selected = !data.selected;
-        }
+        },
+        togglePlayed(data: CivData) {
+            // Toggle the played state of the civ.
+            data.played = !data.played;
+        },
     },
     computed: {
         civClass() {
@@ -98,16 +102,32 @@ export default {
                     'surface-card': !data.selected
                 };
             };
+        },
+        playedClass() {
+            return (data: CivData) => {
+                return {
+                    'bg-primary': data.played,
+                    'text-color-primary': data.played,
+                    'surface-hover': !data.played,
+                    'text-color-secondary': !data.played,
+                };
+            };
+        },
+        playedButtonClass() {
+            return (data: CivData) => {
+                return {
+                    'pi-times': !data.played,
+                    'pi-check': data.played,
+                }
+            }
         }
     }
 }
-
-
 </script>
 
 
 <template>
-    <div 
+    <div
         class="flex flex-row flex-wrap w-full relative mb-3 sm:justify-content-center xl:justify-content-start border-round top-0 left-0 bg-primary">
         <div class="surface-card w-15rem relative border-round m-2" v-for="[key, civ] of store.random_civs.entries()">
             <div class="flex p-1 h-full gap-1 justify-content-between align-content-center align-items-center">
@@ -122,8 +142,9 @@ export default {
             </div>
         </div>
         <!-- TODO: Remove absolute positioning and use flexbox to align the button to the right by wrapping the random civs in a div. -->
-        <div v-if="store.random_civs.length >0" class="absolute right-0 mr-1 mt-1">
-            <Button @click="store.random_civs = []" icon="pi pi-times" style="color: var(--primary-color-text);" text rounded aria-label="Cancel" />
+        <div v-if="store.random_civs.length > 0" class="absolute right-0 mr-1 mt-1">
+            <Button @click="store.random_civs = []" icon="pi pi-times" style="color: var(--primary-color-text);" text
+                rounded aria-label="Cancel" />
         </div>
     </div>
 
@@ -220,11 +241,22 @@ export default {
                 <template class="border-round" #grid="{ data }: { data: CivData }">
                     <div v-if="data.visible" class="col-12 sm:col-6 lg:col-4 xl:col-3 p-2">
                         <div @click="toggleSelected(data)" :class="civClass(data)"
-                            class="border-1 relative h-7rem surface-border border-round" style="cursor: pointer">
+                            class="border-1 relative h-7rem surface-border border-round no-text-select"
+                            style="cursor: pointer">
                             <div class="flex absolute left-0 top-0" v-on:click="$event.stopPropagation()">
                                 <Checkbox :ref="`checkbox_${data.civ.name}`" v-model="data.selected" :binary="true"
                                     :inputClass="['border-top-none', 'border-left-none', 'border-right-1', 'border-bottom-1']"
-                                    :inputStyle="{ 'border-radius': ' var(--border-radius) 0 var(--border-radius) 0' }" />
+                                    :inputStyle="{ 'border-radius': 'var(--border-radius) 0 var(--border-radius) 0' }" />
+                            </div>
+
+                            <div @click="togglePlayed(data); $event.stopPropagation();" :class="playedClass(data)"
+                                class="flex absolute right-0 top-0 px-3 gap-2 align-content-center justify-content-center"
+                                style="padding-top: 0.1rem; padding-bottom: 0.1rem; font-size: 0.7rem; border-radius: 0 var(--border-radius) 0 var(--border-radius); 
+                                                                            outline: 1px solid var(--surface-border)">
+                                <div>
+                                    <i class="pi" :class="playedButtonClass(data)" style="font-size: 0.7rem;"></i>
+                                </div>
+                                <p class="m-0 no-text-select">Played</p>
                             </div>
 
                             <div class="flex align-content-center justify-content-center surface-hover w-3rem absolute left-0 bottom-0 p-1"
@@ -233,7 +265,7 @@ export default {
                                 <div class="flex">
                                     <img class="text-300 w-1rem" style="font-size: 0.8rem"
                                         :src="`./images/expansions/${data.civ.expansion.replace(/ /g, '_')}.webp`"
-                                        :alt="data.civ.expansion" />
+                                        :alt="data.civ.expansion" draggable="false" />
                                 </div>
                             </div>
 
@@ -241,14 +273,14 @@ export default {
                                 class="flex pl-6 pr-3 h-full justify-content-between align-content-center align-items-center">
                                 <div class="flex gap-2 align-items-center">
                                     <img class="max-w-2rem" :src="`./images/civilizations/CivIcon-${data.civ.name}.webp`"
-                                        :alt="data.civ.name" :title="data.civ.name" />
+                                        :alt="data.civ.name" :title="data.civ.name" draggable="false" />
                                     <div class="text-xl font-bold">{{ data.civ.name }}</div>
                                 </div>
                                 <div class="flex gap-2 max-w-2rem p-1 -m-1 mr-2 flex-column"
                                     v-if="data.civ.focuses.length > 0">
                                     <template v-for="focus of data.civ.focuses">
                                         <img class="border-round shadow-4" :src="`./images/focuses/${focus}.webp`"
-                                            :alt="focus" v-tooltip.right="focus" />
+                                            :alt="focus" v-tooltip.right="focus" draggable="false" />
                                     </template>
                                 </div>
                             </div>
