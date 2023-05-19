@@ -107,8 +107,8 @@ export default {
 
 
 <template>
-    <div
-        class="flex flex-row flex-wrap w-full mb-3 sm:justify-content-center xl:justify-content-start border-round top-0 left-0 bg-primary">
+    <div 
+        class="flex flex-row flex-wrap w-full relative mb-3 sm:justify-content-center xl:justify-content-start border-round top-0 left-0 bg-primary">
         <div class="surface-card w-15rem relative border-round m-2" v-for="[key, civ] of store.random_civs.entries()">
             <div class="flex p-1 h-full gap-1 justify-content-between align-content-center align-items-center">
                 <div class="flex gap-2 align-items-center bg-secondary">
@@ -120,6 +120,10 @@ export default {
                     <Button size="small" class="h-2rem w-1rem" plain icon="pi pi-info-circle" text aria-label="Filter" />
                 </div>
             </div>
+        </div>
+        <!-- TODO: Remove absolute positioning and use flexbox to align the button to the right by wrapping the random civs in a div. -->
+        <div v-if="store.random_civs.length >0" class="absolute right-0 mr-1 mt-1">
+            <Button @click="store.random_civs = []" icon="pi pi-times" style="color: var(--primary-color-text);" text rounded aria-label="Cancel" />
         </div>
     </div>
 
@@ -207,16 +211,14 @@ export default {
         </AccordionTab>
     </Accordion>
 
-    <Card class="overflow-scroll h-max border-top-none shadow-none"
-        style="border-top-right-radius:0;border-top-left-radius:0;" :pt="{
-            body: { class: 'pt-0' },
-            content: { class: 'pt-0' }
-        }">
+    <Card class="overflow-y-scroll h-max border-none shadow-none" style="border-radius: 0; scrollbar-width: none;" :pt="{
+        body: { class: 'py-0' },
+        content: { class: 'py-0' }
+    }">
         <template #content>
             <DataView :dataKey="undefined" :value="store.civ_session_data" :layout="'grid'">
                 <template class="border-round" #grid="{ data }: { data: CivData }">
-                    <div v-if="data.visible"
-                        class="col-12 sm:col-6 lg:col-4 xl:col-3 p-2">
+                    <div v-if="data.visible" class="col-12 sm:col-6 lg:col-4 xl:col-3 p-2">
                         <div @click="toggleSelected(data)" :class="civClass(data)"
                             class="border-1 relative h-7rem surface-border border-round" style="cursor: pointer">
                             <div class="flex absolute left-0 top-0" v-on:click="$event.stopPropagation()">
@@ -256,4 +258,5 @@ export default {
             </DataView>
         </template>
     </Card>
+    <div class="h-2rem surface-card" style="border-radius: 0 0 var(--border-radius) var(--border-radius)"></div>
 </template>
