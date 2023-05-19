@@ -95,6 +95,10 @@ export default {
         },
     },
     computed: {
+        randomSelectedCivDatas() {
+            const { civ_session_data, random_civs } = this.store;
+            return civ_session_data.filter(({ civ }) => random_civs.map(({ name }) => name).includes(civ.name));
+        },
         civClass() {
             return (data: CivData) => {
                 return {
@@ -116,8 +120,8 @@ export default {
         playedButtonClass() {
             return (data: CivData) => {
                 return {
-                    'pi-times': !data.played,
-                    'pi-check': data.played,
+                    'pi-play': !data.played,
+                    'pi-undo': data.played,
                 }
             }
         }
@@ -129,14 +133,19 @@ export default {
 <template>
     <div
         class="flex flex-row flex-wrap w-full relative mb-3 sm:justify-content-center xl:justify-content-start border-round top-0 left-0 bg-primary">
-        <div class="surface-card w-15rem relative border-round m-2" v-for="[key, civ] of store.random_civs.entries()">
-            <div class="flex p-1 h-full gap-1 justify-content-between align-content-center align-items-center">
-                <div class="flex gap-2 align-items-center bg-secondary">
-                    <img class="max-w-2rem" :src="`./images/civilizations/CivIcon-${civ.name}.webp`" :alt="civ.name"
-                        :title="civ.name" />
-                    <div class="font-normal text-color-secondary">{{ key + 1 }}: {{ civ.name }}</div>
+        <div class="surface-card relative border-round m-2" v-for="[key, civData] of randomSelectedCivDatas.entries()">
+            <div class="flex p-1 h-full gap-2 justify-content-between align-content-center align-items-center">
+                <div>
+                    <Button @click="togglePlayed(civData)" text>
+                        <i class="pi" :class="playedButtonClass(civData)"></i>
+                    </Button>
                 </div>
-                <div class="flex w-align-items-center" v-if="civ.focuses.length > 0">
+                <div class="flex gap-2 align-items-center bg-secondary">
+                    <img class="max-w-2rem" :src="`./images/civilizations/CivIcon-${civData.civ.name}.webp`"
+                        :alt="civData.civ.name" :title="civData.civ.name" />
+                    <div class="font-normal text-color-secondary">{{ key + 1 }}: {{ civData.civ.name }}</div>
+                </div>
+                <div class="flex w-align-items-center" v-if="civData.civ.focuses.length > 0">
                     <Button size="small" class="h-2rem w-1rem" plain icon="pi pi-info-circle" text aria-label="Filter" />
                 </div>
             </div>
@@ -147,7 +156,6 @@ export default {
                 rounded aria-label="Cancel" />
         </div>
     </div>
-
 
     <Toolbar class="surface-primary border-0 border-none"
         style="border-bottom-right-radius:0; border-bottom-left-radius:0;">
@@ -252,11 +260,12 @@ export default {
                             <div @click="togglePlayed(data); $event.stopPropagation();" :class="playedClass(data)"
                                 class="flex absolute right-0 top-0 px-3 gap-2 align-content-center justify-content-center"
                                 style="padding-top: 0.1rem; padding-bottom: 0.1rem; font-size: 0.7rem; border-radius: 0 var(--border-radius) 0 var(--border-radius); 
-                                                                            outline: 1px solid var(--surface-border)">
+                                                                                    outline: 1px solid var(--surface-border)">
                                 <div>
                                     <i class="pi" :class="playedButtonClass(data)" style="font-size: 0.7rem;"></i>
                                 </div>
-                                <p class="m-0 no-text-select">Played</p>
+                                <p class="m-0 no-text-select"><template v-if="!data.played">Play</template><template
+                                        v-if="data.played">Played</template></p>
                             </div>
 
                             <div class="flex align-content-center justify-content-center surface-hover w-3rem absolute left-0 bottom-0 p-1"
