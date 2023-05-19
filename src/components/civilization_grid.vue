@@ -15,7 +15,7 @@ import AccordionTab from "primevue/accordiontab";
 import Toolbar from "primevue/toolbar";
 import Card from "primevue/card";
 import { useStore } from "../models/store.ts";
-import { Civ } from "../models/civ.ts";
+import { CivData } from "../models/civ_data"
 
 
 function fuzzy_filter(target: string, filter: string) {
@@ -49,31 +49,28 @@ export default {
             focuses,
             random_count: 1,
             filter: "",
-            filtered_civs: [] as Array<Civ>,
             accordionActiveIndex: -1,
             activeTab: 0
         }
     },
     beforeMount() {
-        this.filter_civs()
+        this.filter_civs_by_name()
     },
     methods: {
-        filter_civs() {
-            for (const civ of this.store.civilizations) {
-                let through_filter: boolean = fuzzy_filter(civ.name, this.filter)
-                if (this.filtered_civs.includes(civ)) {
-                    !through_filter ? this.filtered_civs.splice(this.filtered_civs.indexOf(civ), 1) : null
-                } else {
-                    through_filter ? this.filtered_civs.push(civ) : null
-                }
+        filter_civs_by_name() {
+            // Filter civs by name.
+            for (const civ_data of this.store.civ_session_data) {
+                civ_data.visible = fuzzy_filter(civ_data.civ.name, this.filter)
             }
         },
         generate_random_civs() {
             this.store.random_civs = []
 
-            if (this.store.civ_session.selected_civs.length != 0) {
+            const selected_civs = this.store.civ_session_data.filter((civ: CivData) => civ.selected)
+
+            if (selected_civs.length != 0) {
                 for (let i = 0; i < this.random_count; ++i) {
-                    this.store.random_civs.push(this.store.civ_session.selected_civs[Math.floor(Math.random() * this.store.civ_session.selected_civs.length)]);
+                    this.store.random_civs.push(selected_civs[Math.floor(Math.random() * selected_civs.length)].civ);
                 }
             }
         },
@@ -81,33 +78,24 @@ export default {
             this.accordionActiveIndex = this.accordionActiveIndex === 0 ? -1 : 0;
         },
         deselectAll() {
-            const { selected_civs } = this.store.civ_session;
-            const { filtered_civs } = this;
-            this.store.civ_session.selected_civs = selected_civs.filter(civ => !filtered_civs.map(({ name }) => name).includes(civ.name));
+            // Set all civs that are visible through the filter to unselected.
+            this.store.civ_session_data.filter((civ: CivData) => civ.visible).forEach((civ: CivData) => civ.selected = false);
         },
         selectAll() {
-            const { selected_civs } = this.store.civ_session;
-            const { filtered_civs } = this;
-            const unselected_civs = filtered_civs.filter(civ => !selected_civs.map(({ name }) => name).includes(civ.name));
-            this.store.civ_session.selected_civs = selected_civs.concat(unselected_civs);
+            // Set all civs that are visible through the filter to selected.
+            this.store.civ_session_data.filter((civ: CivData) => civ.visible).forEach((civ: CivData) => civ.selected = true);
         },
-        toggleSelected(data: Civ) {
-            const selectedCivs = this.store.civ_session.selected_civs;
-            const selectedCivsNames = selectedCivs.map(({ name }) => name);
-            if (selectedCivsNames.includes(data.name)) {
-                selectedCivs.splice(selectedCivsNames.indexOf(data.name), 1);
-            } else {
-                selectedCivs.push(data);
-            }
+        toggleSelected(data: CivData) {
+            // Toggle the selected state of the civ.
+            data.selected = !data.selected;
         }
     },
     computed: {
         civClass() {
-            return (data: Civ) => {
-                const isSelected = this.store.civ_session.selected_civs.map(({ name }) => name).includes(data.name);
+            return (data: CivData) => {
                 return {
-                    'surface-hover': isSelected,
-                    'surface-card': !isSelected
+                    'surface-hover': data.selected,
+                    'surface-card': !data.selected
                 };
             };
         }
@@ -150,7 +138,7 @@ export default {
                     <div class="flex w-12rem">
                         <span class="p-input-icon-left" v-on:click.stop>
                             <i class="pi pi-search" />
-                            <InputText class="w-full" v-model="filter" @update:modelValue="filter_civs()"
+                            <InputText class="w-full" v-model="filter" @update:modelValue="filter_civs_by_name()"
                                 placeholder="Filter by name" v-on:keydown.stop />
                         </span>
                     </div>
@@ -218,44 +206,45 @@ export default {
             </div>
         </AccordionTab>
     </Accordion>
+
     <Card class="overflow-scroll h-max border-top-none shadow-none"
         style="border-top-right-radius:0;border-top-left-radius:0;" :pt="{
             body: { class: 'pt-0' },
             content: { class: 'pt-0' }
         }">
         <template #content>
-            <DataView :dataKey="undefined" :value="store.civilizations" :layout="'grid'">
-                <template class="border-round" #grid="{ data }">
-                    <div v-if="filtered_civs.map(({ name }) => name).includes(data.name)"
+            <DataView :dataKey="undefined" :value="store.civ_session_data" :layout="'grid'">
+                <template class="border-round" #grid="{ data }: { data: CivData }">
+                    <div v-if="data.visible"
                         class="col-12 sm:col-6 lg:col-4 xl:col-3 p-2">
                         <div @click="toggleSelected(data)" :class="civClass(data)"
                             class="border-1 relative h-7rem surface-border border-round" style="cursor: pointer">
                             <div class="flex absolute left-0 top-0" v-on:click="$event.stopPropagation()">
-                                <Checkbox :ref="`checkbox_${data.name}`" v-model="store.civ_session.selected_civs"
-                                    :value="data"
+                                <Checkbox :ref="`checkbox_${data.civ.name}`" v-model="data.selected" :binary="true"
                                     :inputClass="['border-top-none', 'border-left-none', 'border-right-1', 'border-bottom-1']"
                                     :inputStyle="{ 'border-radius': ' var(--border-radius) 0 var(--border-radius) 0' }" />
                             </div>
 
                             <div class="flex align-content-center justify-content-center surface-hover w-3rem absolute left-0 bottom-0 p-1"
                                 style="border-radius: 0 var(--border-radius) 0 var(--border-radius); outline: 1px solid var(--surface-border) "
-                                v-tooltip.bottom="data.expansion">
+                                v-tooltip.bottom="data.civ.expansion">
                                 <div class="flex">
                                     <img class="text-300 w-1rem" style="font-size: 0.8rem"
-                                        :src="`./images/expansions/${data.expansion.replace(/ /g, '_')}.webp`"
-                                        :alt="data.expansion" />
+                                        :src="`./images/expansions/${data.civ.expansion.replace(/ /g, '_')}.webp`"
+                                        :alt="data.civ.expansion" />
                                 </div>
                             </div>
 
                             <div
                                 class="flex pl-6 pr-3 h-full justify-content-between align-content-center align-items-center">
                                 <div class="flex gap-2 align-items-center">
-                                    <img class="max-w-2rem" :src="`./images/civilizations/CivIcon-${data.name}.webp`"
-                                        :alt="data.name" :title="data.name" />
-                                    <div class="text-xl font-bold">{{ data.name }}</div>
+                                    <img class="max-w-2rem" :src="`./images/civilizations/CivIcon-${data.civ.name}.webp`"
+                                        :alt="data.civ.name" :title="data.civ.name" />
+                                    <div class="text-xl font-bold">{{ data.civ.name }}</div>
                                 </div>
-                                <div class="flex gap-2 max-w-2rem p-1 -m-1 mr-2 flex-column" v-if="data.focuses.length > 0">
-                                    <template v-for="focus of data.focuses">
+                                <div class="flex gap-2 max-w-2rem p-1 -m-1 mr-2 flex-column"
+                                    v-if="data.civ.focuses.length > 0">
+                                    <template v-for="focus of data.civ.focuses">
                                         <img class="border-round shadow-4" :src="`./images/focuses/${focus}.webp`"
                                             :alt="focus" v-tooltip.right="focus" />
                                     </template>
@@ -268,4 +257,3 @@ export default {
         </template>
     </Card>
 </template>
-
