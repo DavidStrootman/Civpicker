@@ -137,6 +137,7 @@ export default {
             else {
                 this.resetClicked = false;
                 this.store.$reset();
+                this.accordionActiveIndex = -1;
             }
         },
 

@@ -72,7 +72,6 @@ export default {
                                                             <Message @close="store.cookiesConfirmed=true" class="w-11 m-4 border-1 bg-secondary" severity="info"
                                                                      icon="pi pi-wrench">This site uses functional cookies</Message>
                                                         </div> -->
-
     <div class="absolute left-0 top-0 flex flex-column w-8rem ">
         <div @click="store.game = 'aoe2'"
             class="flex justify-content-center align-items-center h-6rem m-3 mb-1 border-round" :class="aoe2ButtonClass"
