@@ -46,6 +46,7 @@ export function civ_grid_store(civ_name: "aoe2" | "aoe1", civs: Array<any>) {
             return {
                 hasCelebrated: false,
                 allow_played_civs: false,
+                accordionActiveIndex: -1,
                 civilizations: load_civs(civs),
                 civ_session_data: populate_civ_data(load_civs(civs)),
                 random_civs: [] as Array<Civ>,

@@ -69,9 +69,9 @@ export default {
 
 <template>
     <!-- <div class="absolute z-2 bottom-0 right-0 mr-6 mb-3" v-if="!store.cookiesConfirmed">
-                                                            <Message @close="store.cookiesConfirmed=true" class="w-11 m-4 border-1 bg-secondary" severity="info"
-                                                                     icon="pi pi-wrench">This site uses functional cookies</Message>
-                                                        </div> -->
+                                                                    <Message @close="store.cookiesConfirmed=true" class="w-11 m-4 border-1 bg-secondary" severity="info"
+                                                                             icon="pi pi-wrench">This site uses functional cookies</Message>
+                                                                </div> -->
     <div class="absolute left-0 top-0 flex flex-column w-8rem mt-3 ">
         <div @click="store.game = 'aoe2'"
             class="flex justify-content-center align-items-center h-6rem m-3 mb-1 border-round" :class="aoe2ButtonClass"
@@ -83,7 +83,12 @@ export default {
             style="cursor: pointer">
             <img class="w-full" :src="`./images/games/Age_of_Empires_I.webp`" style="cursor: pointer" />
         </div>
+        <div class="flex justify-content-center mt-3">
+            <Button ref="theme-toggle" class="xl:hidden" :icon="store.theme === 'viva-light' ? 'pi pi-moon' : 'pi pi-sun'"
+                aria-label="Theme" @click="toggleTheme()" />
+        </div>
     </div>
+
     <div class="flex justify-content-start flex-column app-wrapper w-full h-full ">
         <Button ref="theme-toggle" class="hidden xl:block absolute mx-6 my-4 right-0 top-0"
             :icon="store.theme === 'viva-light' ? 'pi pi-moon' : 'pi pi-sun'" text rounded aria-label="Theme"

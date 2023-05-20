@@ -70,7 +70,7 @@ export default {
             store: civ_grid_store(this.game_name, this.unpopulated_civs),
             random_count: 1,
             filter: "",
-            accordionActiveIndex: -1,
+
             activeTab: 0,
             resetClicked: false
         }
@@ -101,7 +101,7 @@ export default {
             }
         },
         toggle_accordion() {
-            this.accordionActiveIndex = this.accordionActiveIndex === 0 ? -1 : 0;
+            this.store.accordionActiveIndex = this.store.accordionActiveIndex === 0 ? -1 : 0;
         },
         selectAll() {
             // Set all civs that are visible through the filter to selected.
@@ -137,10 +137,9 @@ export default {
             else {
                 this.resetClicked = false;
                 this.store.$reset();
-                this.accordionActiveIndex = -1;
+                this.store.accordionActiveIndex = -1;
             }
         },
-
         celebrate() {
             var count = 200;
             var defaults = {
@@ -324,7 +323,7 @@ export default {
             </div>
         </template>
     </Toolbar>
-    <Accordion v-model:activeIndex="accordionActiveIndex" expandIcon="pi pi-angle-left">
+    <Accordion v-model:activeIndex="store.accordionActiveIndex" expandIcon="pi pi-angle-left">
         <AccordionTab :pt="{
             headerAction: { class: 'flex-row-reverse hidden' },
             content: {
@@ -443,5 +442,5 @@ export default {
             </DataView>
         </template>
     </Card>
-    <div class="h-2rem surface-card" style="border-radius: 0 0 var(--border-radius) var(--border-radius)"></div>
+    <div class="h-1rem surface-card" style="border-radius: 0 0 var(--border-radius) var(--border-radius)"></div>
 </template>
