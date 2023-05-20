@@ -72,7 +72,7 @@ export default {
                                                             <Message @close="store.cookiesConfirmed=true" class="w-11 m-4 border-1 bg-secondary" severity="info"
                                                                      icon="pi pi-wrench">This site uses functional cookies</Message>
                                                         </div> -->
-    <div class="absolute left-0 top-0 flex flex-column w-8rem ">
+    <div class="absolute left-0 top-0 flex flex-column w-8rem mt-3 ">
         <div @click="store.game = 'aoe2'"
             class="flex justify-content-center align-items-center h-6rem m-3 mb-1 border-round" :class="aoe2ButtonClass"
             style="cursor: pointer">
@@ -84,8 +84,8 @@ export default {
             <img class="w-full" :src="`./images/games/Age_of_Empires_I.webp`" style="cursor: pointer" />
         </div>
     </div>
-    <div class="flex flex-column app-wrapper w-full h-full justify-content-start">
-        <Button ref="theme-toggle" class="absolute mx-6 my-4 right-0 top-0"
+    <div class="flex justify-content-start flex-column app-wrapper w-full h-full ">
+        <Button ref="theme-toggle" class="hidden xl:block absolute mx-6 my-4 right-0 top-0"
             :icon="store.theme === 'viva-light' ? 'pi pi-moon' : 'pi pi-sun'" text rounded aria-label="Theme"
             @click="toggleTheme()" />
         <civilization_grid game_name="aoe2" :unpopulated_civs="aoe2_unpopulated_civs.civilizations"

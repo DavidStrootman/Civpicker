@@ -291,12 +291,12 @@ export default {
         </div>
     </div>
 
-    <Toolbar class="surface-primary border-0 border-none"
+    <Toolbar class="surface-primary flex-column md:flex-row border-0 border-none"
         style="border-bottom-right-radius:0; border-bottom-left-radius:0;">
         <template #start>
-            <div class="flex align-items-center gap-3">
+            <div class="flex flex-wrap align-items-center gap-3">
                 <Button label="Random Civ" @click="generate_random_civs()" v-on:click.stop />
-                <Slider v-model="random_count" :step="1" :min="1" :max="8" class="ml-2 w-14rem" />
+                <Slider v-model="random_count" :step="1" :min="1" :max="8" class="ml-2 w-14rem hidden md:block" />
                 <InputNumber v-model.number="random_count" buttonLayout="vertical"
                     style="flex-direction: column; width: 3rem" decrementButtonClassName="p-button-secondary"
                     incrementButtonClassName="p-button-secondary" incrementButtonIcon="pi pi-plus"
@@ -310,18 +310,15 @@ export default {
                         </span>
                     </div>
                 </div>
-                <div>
-                    <span class="p-buttonset">
-                        <Button outlined label="Select None" @click="deselectAll()" v-on:click.stop />
-                        <Button outlined label="Select All" @click="selectAll()" v-on:click.stop />
-                    </span>
-
+                <div class="flex gap-2">
+                    <Button outlined label="Select None" @click="deselectAll()" v-on:click.stop />
+                    <Button outlined label="Select All" @click="selectAll()" v-on:click.stop />
                 </div>
             </div>
         </template>
 
         <template #end>
-            <div class="flex align-items-center">
+            <div class="flex py-2 lg:py-0 align-items-center">
                 <Button @click="toggle_accordion()" icon-pos="right" label="Filters and Options" severity="help"
                     icon="pi pi-filter" text />
             </div>
@@ -335,51 +332,47 @@ export default {
                 style: 'border-bottom-right-radius:0;border-bottom-left-radius:0;'
             }
         }">
-            <div class="flex mx-4">
-                <div class="w-full justify-content-center">
-                    <div>
-                        <p>Focuses</p>
-                        <div class="grid w-28rem h-12rem">
-                            <template v-for="{ name } of focuses.focuses">
-                                <div class="col-2">
-                                    <Button @click="toggleFocus(name)"
-                                        class="flex border-round shadow-1 border-none w-4rem h-4rem align-items-center justify-content-center"
-                                        :class="focusButtonClass(name)">
-                                        <img class="border-round h-3rem w-3rem" :src="`./images/focuses/${name}.webp`"
-                                            :alt="name" v-tooltip.bottom="name" />
-                                    </Button>
-                                </div>
-                            </template>
-                        </div>
+            <div class="flex flex-column md:flex-row flex-wrap justify-content-between gap-5 mx-4">
+                <div class="flex-1">
+                    <p>Focuses</p>
+                    <div class="flex flex-row flex-wrap gap-3">
+                        <template v-for="{ name } of focuses.focuses">
+                            <div>
+                                <Button @click="toggleFocus(name)"
+                                    class="flex border-round shadow-1 border-none w-4rem h-4rem align-items-center justify-content-center"
+                                    :class="focusButtonClass(name)">
+                                    <img class="border-round h-3rem w-3rem" :src="`./images/focuses/${name}.webp`"
+                                        :alt="name" v-tooltip.bottom="name" />
+                                </Button>
+                            </div>
+                        </template>
                     </div>
                 </div>
-                <div class="w-full justify-content-center">
-                    <div>
-                        <p>Expansions</p>
-                        <div class="grid w-28rem h-12rem">
-                            <template v-for="{ name } of expansions.expansions">
-                                <div class="col-2">
-                                    <Button @click="toggleExpansion(name)"
-                                        class="flex border-round shadow-1 border-none w-4rem h-4rem align-items-center justify-content-center"
-                                        :class="expansionButtonClass(name)">
-                                        <img class="border-round h-3rem w-3rem"
-                                            :src="`./images/expansions/${name.replace(/ /g, '_')}.webp`" :alt="name"
-                                            v-tooltip.bottom="name" />
-                                    </Button>
-                                </div>
-                            </template>
-                        </div>
+                <div class="flex-1">
+                    <p>Expansions</p>
+                    <div class="flex flex-row flex-wrap gap-3">
+                        <template v-for="{ name } of expansions.expansions">
+                            <div>
+                                <Button @click="toggleExpansion(name)"
+                                    class="flex border-round shadow-1 border-none w-4rem h-4rem align-items-center justify-content-center"
+                                    :class="expansionButtonClass(name)">
+                                    <img class="border-round h-3rem w-3rem"
+                                        :src="`./images/expansions/${name.replace(/ /g, '_')}.webp`" :alt="name"
+                                        v-tooltip.bottom="name" />
+                                </Button>
+                            </div>
+                        </template>
                     </div>
                 </div>
-                <div class="w-full surface-hover border-round p-4 justify-content-center">
+                <div class="flex-2 lg:flex-1 surface-hover border-round p-4 justify-content-center">
                     <div>
                         <p class="text-xl font-bold m-0">Options</p>
-                        <div class="flex flex-row gap-6">
-                            <div class="col-6">
+                        <div class="flex flex-row flex-wrap gap-5">
+                            <div class="flex flex-1 flex-column">
                                 <p>Allow Generating Previously Played Civs</p>
                                 <InputSwitch v-model="store.allow_played_civs" />
                             </div>
-                            <div class="col-6">
+                            <div class="flex flex-1 flex-column">
                                 <p>Reset All Settings</p>
                                 <Button @click="resetButtonClick()" icon="pi pi-refresh"
                                     :severity="!resetClicked ? 'primary' : 'danger'" :label="resetLabel" />
@@ -429,14 +422,14 @@ export default {
                             </div>
 
                             <div
-                                class="flex pl-6 pr-3 h-full justify-content-between align-content-center align-items-center">
+                                class="flex pl-1 md:pl-2 lg:pl-3 xl:pl-3 pr-3 h-full justify-content-between gap-1 align-content-center align-items-center">
                                 <div class="flex gap-2 align-items-center">
                                     <img class="max-w-2rem"
                                         :src="`./images/civilizations/CivIcon-${data.civ.name.replace(/ /g, '_')}.webp`"
                                         :alt="data.civ.name" :title="data.civ.name" draggable="false" />
-                                    <div class="text-xl font-bold">{{ data.civ.name }}</div>
+                                    <div class="text-lg font-bold">{{ data.civ.name }}</div>
                                 </div>
-                                <div class="flex gap-2 max-w-2rem p-1 -m-1 mr-2 flex-column"
+                                <div class="flex gap-2 max-w-2rem p-1 -m-1 mr-1 flex-column"
                                     v-if="data.civ.focuses.length > 0">
                                     <template v-for="focus of data.civ.focuses">
                                         <img class="border-round shadow-4" :src="`./images/focuses/${focus}.webp`"
