@@ -1,0 +1,273 @@
+{
+  "civilizations": [
+    {
+      "civ_bonuses": "",
+      "expansion": "Age of Empires",
+      "focuses": [
+        "Archer",
+        "Siege"
+      ],
+      "name": "Assyrian",
+      "team_bonus": "",
+      "team_unit": "",
+      "unique_tech_castle": "",
+      "unique_tech_castle_effect": "",
+      "unique_tech_imperial": "",
+      "unique_tech_imperial_effect": "",
+      "unique_unit": ""
+    },
+    {
+      "civ_bonuses": "",
+      "expansion": "Age of Empires",
+      "focuses": [
+        "Defence"
+      ],
+      "name": "Babylonian",
+      "team_bonus": "",
+      "team_unit": "",
+      "unique_tech_castle": "",
+      "unique_tech_castle_effect": "",
+      "unique_tech_imperial": "",
+      "unique_tech_imperial_effect": "",
+      "unique_unit": ""
+    },
+    {
+      "civ_bonuses": "",
+      "expansion": "Age of Empires",
+      "focuses": [
+        "Infantry",
+        "Defence"
+      ],
+      "name": "Choson",
+      "team_bonus": "",
+      "team_unit": "",
+      "unique_tech_castle": "",
+      "unique_tech_castle_effect": "",
+      "unique_tech_imperial": "",
+      "unique_tech_imperial_effect": "",
+      "unique_unit": ""
+    },
+    {
+      "civ_bonuses": "",
+      "expansion": "Age of Empires",
+      "focuses": [
+        "Chariots",
+        "Priests"
+      ],
+      "name": "Egyptian",
+      "team_bonus": "",
+      "team_unit": "",
+      "unique_tech_castle": "",
+      "unique_tech_castle_effect": "",
+      "unique_tech_imperial": "",
+      "unique_tech_imperial_effect": "",
+      "unique_unit": ""
+    },
+    {
+      "civ_bonuses": "",
+      "expansion": "Age of Empires",
+      "focuses": [
+        "Infantry",
+        "Navy"
+      ],
+      "name": "Greek",
+      "team_bonus": "",
+      "team_unit": "",
+      "unique_tech_castle": "",
+      "unique_tech_castle_effect": "",
+      "unique_tech_imperial": "",
+      "unique_tech_imperial_effect": "",
+      "unique_unit": ""
+    },
+    {
+      "civ_bonuses": "",
+      "expansion": "Age of Empires",
+      "focuses": [
+        "Archer",
+        "Siege"
+      ],
+      "name": "Hittite",
+      "team_bonus": "",
+      "team_unit": "",
+      "unique_tech_castle": "",
+      "unique_tech_castle_effect": "",
+      "unique_tech_imperial": "",
+      "unique_tech_imperial_effect": "",
+      "unique_unit": ""
+    },
+    {
+      "civ_bonuses": "",
+      "expansion": "Age of Empires",
+      "focuses": [
+        "Archer",
+        "Navy"
+      ],
+      "name": "Minoan",
+      "team_bonus": "",
+      "team_unit": "",
+      "unique_tech_castle": "",
+      "unique_tech_castle_effect": "",
+      "unique_tech_imperial": "",
+      "unique_tech_imperial_effect": "",
+      "unique_unit": ""
+    },
+    {
+      "civ_bonuses": "",
+      "expansion": "Age of Empires",
+      "focuses": [
+        "Elephant",
+        "Navy"
+      ],
+      "name": "Persian",
+      "team_bonus": "",
+      "team_unit": "",
+      "unique_tech_castle": "",
+      "unique_tech_castle_effect": "",
+      "unique_tech_imperial": "",
+      "unique_tech_imperial_effect": "",
+      "unique_unit": ""
+    },
+    {
+      "civ_bonuses": "",
+      "expansion": "Age of Empires",
+      "focuses": [
+        "Elephant",
+        "Navy"
+      ],
+      "name": "Phoenician",
+      "team_bonus": "",
+      "team_unit": "",
+      "unique_tech_castle": "",
+      "unique_tech_castle_effect": "",
+      "unique_tech_imperial": "",
+      "unique_tech_imperial_effect": "",
+      "unique_unit": ""
+    },
+    {
+      "civ_bonuses": "",
+      "expansion": "Age of Empires",
+      "focuses": [
+        "Economy",
+        "Cavalry"
+      ],
+      "name": "Shang",
+      "team_bonus": "",
+      "team_unit": "",
+      "unique_tech_castle": "",
+      "unique_tech_castle_effect": "",
+      "unique_tech_imperial": "",
+      "unique_tech_imperial_effect": "",
+      "unique_unit": ""
+    },
+    {
+      "civ_bonuses": "",
+      "expansion": "Age of Empires",
+      "focuses": [
+        "Economy",
+        "Siege"
+      ],
+      "name": "Sumerian",
+      "team_bonus": "",
+      "team_unit": "",
+      "unique_tech_castle": "",
+      "unique_tech_castle_effect": "",
+      "unique_tech_imperial": "",
+      "unique_tech_imperial_effect": "",
+      "unique_unit": ""
+    },
+    {
+      "civ_bonuses": "",
+      "expansion": "Age of Empires",
+      "focuses": [
+        "Cavalry",
+        "Navy"
+      ],
+      "name": "Yamato",
+      "team_bonus": "",
+      "team_unit": "",
+      "unique_tech_castle": "",
+      "unique_tech_castle_effect": "",
+      "unique_tech_imperial": "",
+      "unique_tech_imperial_effect": "",
+      "unique_unit": ""
+    },
+    {
+      "civ_bonuses": "",
+      "expansion": "Rise of Rome",
+      "focuses": [
+        "Elephant",
+        "Camel"
+      ],
+      "name": "Carthaginian",
+      "team_bonus": "",
+      "team_unit": "",
+      "unique_tech_castle": "",
+      "unique_tech_castle_effect": "",
+      "unique_tech_imperial": "",
+      "unique_tech_imperial_effect": "",
+      "unique_unit": ""
+    },
+    {
+      "civ_bonuses": "",
+      "expansion": "Rise of Rome",
+      "focuses": [
+        "Infantry",
+        "Camel"
+      ],
+      "name": "Macedonian",
+      "team_bonus": "",
+      "team_unit": "",
+      "unique_tech_castle": "",
+      "unique_tech_castle_effect": "",
+      "unique_tech_imperial": "",
+      "unique_tech_imperial_effect": "",
+      "unique_unit": ""
+    },
+    {
+      "civ_bonuses": "",
+      "expansion": "Rise of Rome",
+      "focuses": [
+        "Camel",
+        "Economy"
+      ],
+      "name": "Palmyran",
+      "team_bonus": "",
+      "team_unit": "",
+      "unique_tech_castle": "",
+      "unique_tech_castle_effect": "",
+      "unique_tech_imperial": "",
+      "unique_tech_imperial_effect": "",
+      "unique_unit": ""
+    },
+    {
+      "civ_bonuses": "",
+      "expansion": "Rise of Rome",
+      "focuses": [
+        "Infantry"
+      ],
+      "name": "Roman",
+      "team_bonus": "",
+      "team_unit": "",
+      "unique_tech_castle": "",
+      "unique_tech_castle_effect": "",
+      "unique_tech_imperial": "",
+      "unique_tech_imperial_effect": "",
+      "unique_unit": ""
+    },
+    {
+      "civ_bonuses": "",
+      "expansion": "Return of Rome",
+      "focuses": [
+        "Archer"
+      ],
+      "name": "Lac Viet",
+      "team_bonus": "",
+      "team_unit": "",
+      "unique_tech_castle": "",
+      "unique_tech_castle_effect": "",
+      "unique_tech_imperial": "",
+      "unique_tech_imperial_effect": "",
+      "unique_unit": ""
+    }
+  ]
+}

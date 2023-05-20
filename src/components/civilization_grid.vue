@@ -1,7 +1,5 @@
 <script lang="ts">
-import unpopulated_civs from "../civilizations.json"
-import expansions from "../expansions.json"
-import focuses from "../focuses.json"
+
 import '../assets/styles/civilizations.css'
 import 'primeicons/primeicons.css'
 import DataView from 'primevue/dataview';
@@ -15,9 +13,10 @@ import Accordion from "primevue/accordion";
 import AccordionTab from "primevue/accordiontab";
 import Toolbar from "primevue/toolbar";
 import Card from "primevue/card";
-import { useStore } from "../models/store.ts";
+import { civ_grid_store } from "../models/store.ts";
 import { CivData } from "../models/civ_data"
 import { Civ } from "../models/civ"
+import { PropType } from 'vue';
 
 
 function fuzzy_filter(target: string, filter: string) {
@@ -43,13 +42,27 @@ export default {
         Toolbar,
         Card,
     },
+    props: {
+        game_name: {
+            required: true,
+            type: String as PropType<"aoe1" | "aoe2">,
+        },
+        unpopulated_civs: {
+            required: true,
+            type: Array<any>,
+        },
+        expansions: {
+            required: true,
+            type: Object,
+        },
+        focuses: {
+            required: true,
+            type: Object,
+        },
+    },
     data() {
         return {
-            // TODO: Create session in App.vue and pass it to this component.
-            store: useStore(),
-            unpopulated_civs,
-            expansions,
-            focuses,
+            store: civ_grid_store(this.game_name, this.unpopulated_civs),
             random_count: 1,
             filter: "",
             accordionActiveIndex: -1,
@@ -360,7 +373,7 @@ export default {
                             <div
                                 class="flex pl-6 pr-3 h-full justify-content-between align-content-center align-items-center">
                                 <div class="flex gap-2 align-items-center">
-                                    <img class="max-w-2rem" :src="`./images/civilizations/CivIcon-${data.civ.name}.webp`"
+                                    <img class="max-w-2rem" :src="`./images/civilizations/CivIcon-${data.civ.name.replace(/ /g, '_')}.webp`"
                                         :alt="data.civ.name" :title="data.civ.name" draggable="false" />
                                     <div class="text-xl font-bold">{{ data.civ.name }}</div>
                                 </div>
