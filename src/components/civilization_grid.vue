@@ -1,6 +1,9 @@
 <script lang="ts">
 
 import '../assets/styles/civilizations.css'
+// @ts-ignore
+import confetti from "canvas-confetti/src/confetti.js"
+
 import 'primeicons/primeicons.css'
 import DataView from 'primevue/dataview';
 import DataViewLayoutOptions from 'primevue/dataviewlayoutoptions'
@@ -13,6 +16,7 @@ import Accordion from "primevue/accordion";
 import AccordionTab from "primevue/accordiontab";
 import Toolbar from "primevue/toolbar";
 import Card from "primevue/card";
+import Message from "primevue/message";
 import { civ_grid_store } from "../models/store.ts";
 import { CivData } from "../models/civ_data"
 import { Civ } from "../models/civ"
@@ -41,6 +45,7 @@ export default {
         AccordionTab,
         Toolbar,
         Card,
+        Message,
     },
     props: {
         game_name: {
@@ -133,6 +138,42 @@ export default {
                 this.resetClicked = false;
                 this.store.$reset();
             }
+        },
+
+        celebrate() {
+            var count = 200;
+            var defaults = {
+                origin: { y: 0.9 }
+            };
+
+            function fire(particleRatio: number, opts: object) {
+                confetti(Object.assign({}, defaults, opts, {
+                    particleCount: Math.floor(count * particleRatio)
+                }));
+            }
+
+            fire(0.25, {
+                spread: 26,
+                startVelocity: 55,
+            });
+            fire(0.2, {
+                spread: 60,
+            });
+            fire(0.35, {
+                spread: 100,
+                decay: 0.91,
+                scalar: 0.8
+            });
+            fire(0.1, {
+                spread: 120,
+                startVelocity: 25,
+                decay: 0.92,
+                scalar: 1.2
+            });
+            fire(0.1, {
+                spread: 120,
+                startVelocity: 45,
+            });
         }
     },
     computed: {
@@ -201,15 +242,31 @@ export default {
         resetLabel() {
             return this.resetClicked ? 'Are you sure?' : 'Reset';
         },
+        allCivsPlayed() {
+            if (this.store.hasCelebrated) return false;
+            if (this.store.civ_session_data.every(civData => civData.played)) {
+                this.celebrate();
+                this.store.hasCelebrated = true;
+
+                return true;
+            }
+            return false;
+        },
     }
 }
 </script>
 
 
 <template>
+    <div v-if="allCivsPlayed" class="absolute w-full z-2 bottom-0 left-0 mb-3">
+        <div class="flex flex-row justify-content-center align-items-center">
+            <Message class="w-30rem m-4 border-1 bg-secondary" severity="success" icon="pi pi-heart">
+                You've played all {{ store.civ_session_data.length }} Civilizations!</Message>
+        </div>
+    </div>
     <div
         class="flex flex-row flex-wrap w-full relative mb-3 sm:justify-content-center xl:justify-content-start border-round top-0 left-0 bg-primary">
-        <div class="surface-card relative border-round m-2" v-for="[key, civData] of randomSelectedCivDatas.entries()"> 
+        <div class="surface-card relative border-round m-2" v-for="[key, civData] of randomSelectedCivDatas.entries()">
             <div class="flex p-1 h-full gap-2 justify-content-between align-content-center align-items-center">
                 <div v-tooltip.bottom="playButtonTooltip(civData.played)">
                     <Button @click="togglePlayed(civData)" text>
@@ -373,7 +430,8 @@ export default {
                             <div
                                 class="flex pl-6 pr-3 h-full justify-content-between align-content-center align-items-center">
                                 <div class="flex gap-2 align-items-center">
-                                    <img class="max-w-2rem" :src="`./images/civilizations/CivIcon-${data.civ.name.replace(/ /g, '_')}.webp`"
+                                    <img class="max-w-2rem"
+                                        :src="`./images/civilizations/CivIcon-${data.civ.name.replace(/ /g, '_')}.webp`"
                                         :alt="data.civ.name" :title="data.civ.name" draggable="false" />
                                     <div class="text-xl font-bold">{{ data.civ.name }}</div>
                                 </div>

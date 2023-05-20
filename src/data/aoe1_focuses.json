@@ -1,0 +1,37 @@
+{
+  "focuses": [
+    {
+      "name": "Archer"
+    },
+    {
+      "name": "Camel"
+    },
+    {
+      "name": "Cavalry"
+    },
+    {
+      "name": "Chariot"
+    },
+    {
+      "name": "Defence"
+    },
+    {
+      "name": "Economy"
+    },
+    {
+      "name": "Elephant"
+    },
+    {
+      "name": "Infantry"
+    },
+    {
+      "name": "Navy"
+    },
+    {
+      "name": "Priest"
+    },
+    {
+      "name": "Siege"
+    }
+  ]
+}

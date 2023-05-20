@@ -2,15 +2,12 @@
 
 import civilization_grid from "./components/civilization_grid.vue";
 import Button from "primevue/button";
-import Message from "primevue/message";
-// @ts-ignore
-import confetti from "canvas-confetti/src/confetti.js"
-import aoe2_unpopulated_civs from "./aoe2_civilizations.json"
-import aoe2_expansions from "./aoe2_expansions.json"
-import aoe2_focuses from "./aoe2_focuses.json"
-import aoe1_unpopulated_civs from "./aoe1_civilizations.json"
-// import aoe1_expansions from "./aoe1_expansions.json"
-// import aoe1_focuses from "./aoe1_focuses.json"
+import aoe2_unpopulated_civs from "./data/aoe2_civilizations.json"
+import aoe2_expansions from "./data/aoe2_expansions.json"
+import aoe2_focuses from "./data/aoe2_focuses.json"
+import aoe1_unpopulated_civs from "./data/aoe1_civilizations.json"
+import aoe1_expansions from "./data/aoe1_expansions.json"
+import aoe1_focuses from "./data/aoe1_focuses.json"
 import { main_store } from "./models/store";
 
 export default {
@@ -38,41 +35,7 @@ export default {
             if (this.store.game === 'aoe2') this.store.game = 'aoe1';
             else if (this.store.game === 'aoe1') this.store.game = 'aoe2';
         },
-        celebrate() {
-            var count = 200;
-            var defaults = {
-                origin: { y: 0.9 }
-            };
 
-            function fire(particleRatio: number, opts: object) {
-                confetti(Object.assign({}, defaults, opts, {
-                    particleCount: Math.floor(count * particleRatio)
-                }));
-            }
-
-            fire(0.25, {
-                spread: 26,
-                startVelocity: 55,
-            });
-            fire(0.2, {
-                spread: 60,
-            });
-            fire(0.35, {
-                spread: 100,
-                decay: 0.91,
-                scalar: 0.8
-            });
-            fire(0.1, {
-                spread: 120,
-                startVelocity: 25,
-                decay: 0.92,
-                scalar: 1.2
-            });
-            fire(0.1, {
-                spread: 120,
-                startVelocity: 45,
-            });
-        }
     },
     mounted() {
         this.setTheme()
@@ -80,7 +43,6 @@ export default {
     components: {
         Button,
         civilization_grid,
-        Message
     },
     data() {
         return {
@@ -89,24 +51,16 @@ export default {
             aoe2_expansions,
             aoe2_focuses,
             aoe1_unpopulated_civs,
-            aoe1_expansions: [],
-            aoe1_focuses: [],
+            aoe1_expansions,
+            aoe1_focuses,
         }
     },
     computed: {
-        // TODO: Move this to civilization_grid component.
-        // ifAllPlayed() {
-        //     if (this.store.hasCelebrated) return false;
-        //     if (this.store.civ_session_data.every(civData => civData.played)) {
-        //         this.celebrate();
-        //         this.store.hasCelebrated = true;
-
-        //         return true;
-        //     }
-        //     return false;
-        // },
-        gameButtonLabel() {
-            return this.store.game === 'aoe2' ? 'aoe1' : 'aoe2';
+        aoe1ButtonClass() {
+            return this.store.game === 'aoe1' ? 'civ-card-active' : 'surface-card';
+        },
+        aoe2ButtonClass() {
+            return this.store.game === 'aoe2' ? 'civ-card-active' : 'surface-card';
         }
     }
 };
@@ -115,21 +69,29 @@ export default {
 
 <template>
     <!-- <div class="absolute z-2 bottom-0 right-0 mr-6 mb-3" v-if="!store.cookiesConfirmed">
-                                            <Message @close="store.cookiesConfirmed=true" class="w-11 m-4 border-1 bg-secondary" severity="info"
-                                                     icon="pi pi-wrench">This site uses functional cookies</Message>
-                                        </div> -->
-    <!-- <div v-if="ifAllPlayed" class="absolute w-full z-2 bottom-0 left-0 mb-3">
-        <div class="flex flex-row justify-content-center align-items-center">
-            <Message class="w-30rem m-4 border-1 bg-secondary" severity="success" icon="pi pi-heart">Congratulations! You've
-                played all {{ store.civ_session_data.length }} Civilizations!</Message>
+                                                            <Message @close="store.cookiesConfirmed=true" class="w-11 m-4 border-1 bg-secondary" severity="info"
+                                                                     icon="pi pi-wrench">This site uses functional cookies</Message>
+                                                        </div> -->
+
+    <div class="absolute left-0 top-0 flex flex-column w-8rem ">
+        <div @click="store.game = 'aoe2'"
+            class="flex justify-content-center align-items-center h-6rem m-3 mb-1 border-round" :class="aoe2ButtonClass"
+            style="cursor: pointer">
+            <img class="w-full" :src="`./images/games/Age_of_Empires_II.webp`" />
         </div>
-    </div> -->
-    <Button @click="toggleGame()" class="absolute left-0 top-0" :label="gameButtonLabel" />
+        <div @click="store.game = 'aoe1'"
+            class="flex justify-content-center align-items-center h-6rem m-3 mt-1 p-2 border-round" :class="aoe1ButtonClass"
+            style="cursor: pointer">
+            <img class="w-full" :src="`./images/games/Age_of_Empires_I.webp`" style="cursor: pointer" />
+        </div>
+    </div>
     <div class="flex flex-column app-wrapper w-full h-full justify-content-start">
         <Button ref="theme-toggle" class="absolute mx-6 my-4 right-0 top-0"
             :icon="store.theme === 'viva-light' ? 'pi pi-moon' : 'pi pi-sun'" text rounded aria-label="Theme"
             @click="toggleTheme()" />
-        <civilization_grid game_name="aoe2" :unpopulated_civs="aoe2_unpopulated_civs.civilizations" :expansions="aoe2_expansions" :focuses="aoe2_focuses"  v-if="store.game === 'aoe2'" />
-        <civilization_grid game_name="aoe1" :unpopulated_civs="aoe1_unpopulated_civs.civilizations" :expansions="aoe1_expansions" :focuses="aoe1_focuses" v-if="store.game === 'aoe1'" />
+        <civilization_grid game_name="aoe2" :unpopulated_civs="aoe2_unpopulated_civs.civilizations"
+            :expansions="aoe2_expansions" :focuses="aoe2_focuses" v-if="store.game === 'aoe2'" />
+        <civilization_grid game_name="aoe1" :unpopulated_civs="aoe1_unpopulated_civs.civilizations"
+            :expansions="aoe1_expansions" :focuses="aoe1_focuses" v-if="store.game === 'aoe1'" />
     </div>
 </template>
