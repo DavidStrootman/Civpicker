@@ -1,12 +1,11 @@
-# Gagnismathr
-
-Track which civilizations you have played in Age of Empires I and II. Randomly select a new civilization to play based on the filters you set. Live on [aoe.strootman.dev](https://aoe.strootman.dev).
+# Age of Empires Civilization Picker
+Track which civilizations you have played in Age of Empires I and II. Randomly select a new civilization to play based on the filters you set. Live on [aoe.civpicker.com](https://aoe.civpicker.com).
 
 ![Preview](images/preview.png)
 
 ## Installation
 Built with [Vue](https://vuejs.org/) | [Vite](https://vitejs.dev/) | [Pinia](https://pinia.vuejs.org/) 
-1. Clone the repository: `git clone https://github.com/davidstrootman/Gagnismathr.git`
+1. Clone the repository: `git clone https://github.com/davidstrootman/Civpicker.git`
 2. Install dependencies: `npm install`
 
 ## Usage
