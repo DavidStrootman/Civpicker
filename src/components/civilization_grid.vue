@@ -112,13 +112,13 @@ export default {
         },
         toggleFocus(focus: string) {
             const civs = this.store.civ_session_data.filter((civData: CivData) => civData.civ.focuses.includes(focus));
-            const allSelected = civs.every((civData: CivData) => civData.selected);
-            civs.forEach((civData: CivData) => civData.selected = !allSelected);
+            const someSelected = civs.some((civData: CivData) => civData.selected);
+            civs.forEach((civData: CivData) => civData.selected = !someSelected);
         },
         toggleExpansion(expansion: string) {
             const civs = this.store.civ_session_data.filter((civData: CivData) => civData.civ.expansion === expansion);
-            const allSelected = civs.every((civData: CivData) => civData.selected);
-            civs.forEach((civData: CivData) => civData.selected = !allSelected);
+            const someSelected = civs.some((civData: CivData) => civData.selected);
+            civs.forEach((civData: CivData) => civData.selected = !someSelected);
         },
         toggleSelected(data: CivData) {
             // Toggle the selected state of the civ.
