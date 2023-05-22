@@ -1,6 +1,5 @@
 <script lang="ts">
 
-import '../assets/styles/civilizations.css'
 // @ts-ignore
 import confetti from "canvas-confetti/src/confetti.js"
 
@@ -223,9 +222,11 @@ export default {
             return (expansion: string) => {
                 const civs = this.store.civ_session_data.filter((civData: CivData) => civData.civ.expansion === expansion);
                 const allSelected = civs.every((civData: CivData) => civData.selected);
+                const someSelected = civs.some((civData: CivData) => civData.selected);
                 return {
                     'bg-primary': allSelected,
-                    'surface-card': !allSelected
+                    'civ-card-active': someSelected && !allSelected,
+                    'surface-card': !allSelected && !someSelected,
                 }
             }
         },
@@ -233,9 +234,11 @@ export default {
             return (filter: string) => {
                 const civs = this.store.civ_session_data.filter((civData: CivData) => civData.civ.focuses.includes(filter));
                 const allSelected = civs.every((civData: CivData) => civData.selected);
+                const someSelected = civs.some((civData: CivData) => civData.selected);
                 return {
                     'bg-primary': allSelected,
-                    'surface-card': !allSelected
+                    'civ-card-active': someSelected && !allSelected,
+                    'surface-card': !allSelected && !someSelected,
                 }
             }
         },
