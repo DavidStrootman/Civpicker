@@ -5,7 +5,7 @@ Track which civilizations you have played in Age of Empires I and II. Randomly s
 ![Preview](images/preview.png)
 
 ## Installation
-
+Built with [Vue](https://vuejs.org/) | [Vite](https://vitejs.dev/) | [Pinia](https://pinia.vuejs.org/) 
 1. Clone the repository: `git clone https://github.com/davidstrootman/Gagnismathr.git`
 2. Install dependencies: `npm install`
 
