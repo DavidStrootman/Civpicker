@@ -190,8 +190,9 @@ export default {
         civCardClass() {
             return (data: CivData) => {
                 return {
-                    'civ-card-active': data.selected,
-                    'surface-card': !data.selected
+                    'civ-card-active': data.selected && (!data.played || this.store.allow_played_civs),
+                    'surface-50': data.selected && data.played && !this.store.allow_played_civs,
+                    'surface-card': !data.selected,
                 };
             };
         },
@@ -277,7 +278,8 @@ export default {
                     </Button>
                 </div>
                 <div class="flex gap-2 align-items-center bg-secondary">
-                    <img class="max-w-2rem" :src="`./images/civilizations/CivIcon-${civData.civ.name.replace(/ /g, '_')}.webp`"
+                    <img class="max-w-2rem"
+                        :src="`./images/civilizations/CivIcon-${civData.civ.name.replace(/ /g, '_')}.webp`"
                         :alt="civData.civ.name" :title="civData.civ.name" />
                     <div class="font-normal text-color-secondary">{{ key + 1 }}: {{ civData.civ.name }}</div>
                 </div>
